@@ -1,4 +1,4 @@
-package com.superwin.superWin.enumerator;
+package com.superwin.superWin.commonEnum;
 
 public enum GameName {
     WIN_GO,

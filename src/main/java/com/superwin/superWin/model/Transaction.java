@@ -1,7 +1,7 @@
 package com.superwin.superWin.model;
 
-import com.superwin.superWin.enumerator.TransactionStatus;
-import com.superwin.superWin.enumerator.TransactionType;
+import com.superwin.superWin.commonEnum.TransactionStatus;
+import com.superwin.superWin.commonEnum.TransactionType;
 import jakarta.persistence.*;
 import lombok.Data;
 
