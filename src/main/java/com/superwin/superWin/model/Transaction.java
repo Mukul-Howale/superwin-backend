@@ -16,7 +16,7 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
+    private Long profileId;
 
     private TransactionType transactionType;
     private Long amount;
