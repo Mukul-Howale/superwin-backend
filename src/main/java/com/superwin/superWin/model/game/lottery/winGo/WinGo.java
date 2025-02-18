@@ -6,13 +6,17 @@ import com.superwin.superWin.commonEnum.GameType;
 import com.superwin.superWin.model.game.lottery.winGo.enums.Color;
 import com.superwin.superWin.model.game.lottery.winGo.enums.Size;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "win_go")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class WinGo {
 
     @Id
