@@ -23,12 +23,13 @@ public class WinGoScheduler {
     private static final Integer initialNumber = -1;
 
     @Scheduled(fixedRate = 30000) // Runs every 30 seconds
-    public void createSession() {
+    private void createSession() {
         try {
             WinGo winGo = WinGo.builder()
+                    .id(UUID.randomUUID())
                     .name(GameName.WIN_GO)
                     .type(GameType.LOTTERY)
-                    .status(GameSessionStatus.CREATED)
+                    .status(GameSessionStatus.ACTIVE)
                     .totalAmount(initialTotalAmount)
                     .minorityAmount(initialMinorityAmount)
                     .majorityAmount(initialMajorityAmount)
@@ -41,4 +42,24 @@ public class WinGoScheduler {
             throw new RuntimeException(e);
         }
     }
+
+    @Scheduled(fixedRate = 25000)
+    private void lastRun(){
+        try{
+            // using game id get all the bets data
+            // segregate data account to the parameters (e.g. big, green, etc.)
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void calculationAlgo(){
+
+    }
+
+    private void majoritySelectionAlgo(){
+
+    }
+
 }
