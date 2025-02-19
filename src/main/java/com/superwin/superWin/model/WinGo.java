@@ -1,12 +1,13 @@
-package com.superwin.superWin.model.game.lottery.winGo;
+package com.superwin.superWin.model;
 
 import com.superwin.superWin.commonEnum.GameName;
 import com.superwin.superWin.commonEnum.GameSessionStatus;
 import com.superwin.superWin.commonEnum.GameType;
-import com.superwin.superWin.model.game.lottery.winGo.enums.Color;
-import com.superwin.superWin.model.game.lottery.winGo.enums.Size;
+import com.superwin.superWin.game.lottery.winGo.enums.Color;
+import com.superwin.superWin.game.lottery.winGo.enums.Size;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "win_go")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class WinGo {
