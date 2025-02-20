@@ -1,8 +1,5 @@
-package com.superwin.superWin.model;
+package com.superwin.superWin.game.lottery.winGo;
 
-import com.superwin.superWin.commonEnum.GameName;
-import com.superwin.superWin.commonEnum.GameSessionStatus;
-import com.superwin.superWin.commonEnum.GameType;
 import com.superwin.superWin.game.lottery.winGo.enums.Color;
 import com.superwin.superWin.game.lottery.winGo.enums.Size;
 import jakarta.persistence.*;
@@ -22,12 +19,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class WinGo {
 
+    // Game session id
     @Id
     private UUID id;
-
-    private GameName name;
-    private GameType type;
-    private GameSessionStatus status;
 
     private Long totalAmount;
     private Long minorityAmount;
