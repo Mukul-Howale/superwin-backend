@@ -3,7 +3,7 @@ package com.superwin.superWin.dto;
 
 import java.util.UUID;
 
-public record BetRequestDTO(
+public record WinGoBetRequestDTO(
         UUID profileId,
         UUID sessionId,
         Long betAmount

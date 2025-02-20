@@ -1,6 +1,6 @@
-package com.superwin.superWin.repository;
+package com.superwin.superWin.game.lottery.winGo.repository;
 
-import com.superwin.superWin.game.lottery.winGo.WinGo;
+import com.superwin.superWin.game.lottery.winGo.model.WinGo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

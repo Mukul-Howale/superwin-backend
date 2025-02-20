@@ -1,4 +1,4 @@
-package com.superwin.superWin.game.lottery.winGo;
+package com.superwin.superWin.game.lottery.winGo.model;
 
 import com.superwin.superWin.game.lottery.winGo.enums.Color;
 import com.superwin.superWin.game.lottery.winGo.enums.Size;

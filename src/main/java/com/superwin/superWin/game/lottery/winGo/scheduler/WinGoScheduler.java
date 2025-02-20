@@ -1,10 +1,7 @@
-package com.superwin.superWin.service;
+package com.superwin.superWin.game.lottery.winGo.scheduler;
 
-import com.superwin.superWin.commonEnum.GameName;
-import com.superwin.superWin.commonEnum.GameSessionStatus;
-import com.superwin.superWin.commonEnum.GameType;
-import com.superwin.superWin.game.lottery.winGo.WinGo;
-import com.superwin.superWin.repository.WinGoRepository;
+import com.superwin.superWin.game.lottery.winGo.model.WinGo;
+import com.superwin.superWin.game.lottery.winGo.repository.WinGoRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -27,9 +24,6 @@ public class WinGoScheduler {
         try {
             WinGo winGo = WinGo.builder()
                     .id(UUID.randomUUID())
-                    .name(GameName.WIN_GO)
-                    .type(GameType.LOTTERY)
-                    .status(GameSessionStatus.ACTIVE)
                     .totalAmount(INITIAL_TOTAL_AMOUNT)
                     .minorityAmount(INITIAL_MINORITY_AMOUNT)
                     .majorityAmount(INITIAL_MAJORITY_AMOUNT)

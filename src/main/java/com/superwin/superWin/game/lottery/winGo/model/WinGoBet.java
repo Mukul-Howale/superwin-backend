@@ -1,10 +1,9 @@
-package com.superwin.superWin.model;
+package com.superwin.superWin.game.lottery.winGo.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -14,7 +13,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Bet {
+public class WinGoBet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
