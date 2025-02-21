@@ -1,0 +1,25 @@
+spring:
+  config:
+    import: file:config-server/src/main/resources/config/secrets.properties
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/superwin-referralservice
+    #  Just for test purpose. Not safe for prod
+    #  Do this if you want to lose you job and get laughed on
+    username: referral-service
+    password: referral-service@12345
+
+server:
+  port: 8095
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_SERVER_ADDRESS:http://localhost:8761/eureka}
+
+# This helps in publishing 100% of matrices to zipkin
+# probability : 1.0
+management:
+  tracing:
+    sampling:
+      probability: 1.0
