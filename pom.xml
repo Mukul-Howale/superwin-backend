@@ -7,18 +7,17 @@
 	<artifactId>super-win</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
 	<name>super-win</name>
 	<description>Backend for super win application</description>
 
 	<modules>
-		<module>profile-service</module>
 		<module>user-service</module>
-<!--		<module>service-registry</module>-->
-<!--		<module>config-server</module>-->
+		<module>profile-service</module>
 		<module>transaction-service</module>
 		<module>referral-service</module>
 		<module>game-service</module>
+		<module>service-registry</module>
+		<module>config-server</module>
 	</modules>
 
 </project>
