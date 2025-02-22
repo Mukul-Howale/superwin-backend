@@ -1,40 +1,36 @@
 package com.superwin.gameservice.service;
 
-//import com.superwin.superwin.game.colortrading.wingo.dto.WinGoBetRequestDTO;
-//import com.superwin.superwin.exception.ProfileNotFoundException;
-//import com.superwin.superwin.exception.SessionNotFoundException;
-//import com.superwin.superwin.model.Profile;
-//import com.superwin.superwin.model.Session;
-//import com.superwin.superwin.game.colortrading.wingo.repository.WinGoBetRepository;
-//import com.superwin.superwin.repository.ProfileRepository;
-//import com.superwin.superwin.repository.SessionRepository;
+import com.superwin.gameservice.client.ProfileClient;
+import com.superwin.gameservice.dto.ProfileDTO;
 import com.superwin.gameservice.dto.WinGoBetRequestDTO;
+import com.superwin.gameservice.exception.ProfileNotFoundException;
+import com.superwin.gameservice.repository.WinGoBetRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class WinGoService {
 
-//    private WinGoBetRepository winGoBetRepository;
-//    private ProfileRepository profileRepository;
-//    private SessionRepository sessionRepository;
-//
+    private WinGoBetRepository winGoBetRepository;
+    private ProfileClient profileClient;
+
     public Boolean bet(WinGoBetRequestDTO winGoBetRequestDTO){
-//        try {
-//            Profile profile = profileRepository.findById(winGoBetRequestDTO.profileId())
-//                    .orElseThrow(() -> new ProfileNotFoundException("Profile not found"));
-//
-//            Session session = sessionRepository.findById(winGoBetRequestDTO.sessionId())
-//                    .orElseThrow(() -> new SessionNotFoundException("Session not found"));
-//
-//
-//
-//            return true;
-//
-//        } catch (Exception e){
-//            throw new RuntimeException();
-//        }
-        return true;
+        try {
+            ResponseEntity<ProfileDTO> profileDTO = profileClient.getById(winGoBetRequestDTO.profileId());
+            if (profileDTO.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST))
+                throw new ProfileNotFoundException("Profile not found");
+
+
+
+            return true;
+
+        } catch (Exception e){
+            throw new RuntimeException();
+        }
     }
 }

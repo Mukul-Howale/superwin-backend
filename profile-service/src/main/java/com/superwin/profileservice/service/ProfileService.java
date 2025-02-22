@@ -1,8 +1,10 @@
 package com.superwin.profileservice.service;
 
+import com.superwin.profileservice.dto.ProfileDTO;
 import com.superwin.profileservice.model.Profile;
 import com.superwin.profileservice.repository.ProfileRepository;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,11 +17,13 @@ import java.util.UUID;
 public class ProfileService {
 
     private ProfileRepository profileRepository;
+    private ModelMapper mapper;
 
-    public ResponseEntity<Profile> getById(UUID id){
+    public ResponseEntity<ProfileDTO> getById(UUID id){
         try {
             Optional<Profile> profile = profileRepository.findById(id);
-            return profile.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+            if (profile.isEmpty()) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(mapper.map(profile, ProfileDTO.class), HttpStatus.OK);
         }catch (Exception e){
             throw new RuntimeException();
         }
