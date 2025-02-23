@@ -13,7 +13,18 @@ spring:
             uri: lb://profile-service
             predicates:
               - Path=/profile/**
-          
+          - id: game-service
+            uri: lb://game-service
+            predicates:
+              - Path=/game/**
+          - id: transaction-service
+            uri: lb://transaction-service
+            predicates:
+              - Path=/transaction/**
+          - id: referral-service
+            uri: lb://referral-service
+            predicates:
+              - Path=/referral/**
 
 server:
   port: 8060

@@ -26,7 +26,6 @@ public class WinGoService {
                 throw new ProfileNotFoundException("Profile not found");
 
 
-
             return true;
 
         } catch (Exception e){
