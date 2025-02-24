@@ -3,11 +3,11 @@ spring:
     import: file:config-server/src/main/resources/config/secrets.properties
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/superwin-userservice
+    url: jdbc:postgresql://localhost:5431/superwin-dev-v1
     #  Just for test purpose. Not safe for prod
     #  Do this if you want to lose you job and get laughed on
-    username: user-service
-    password: user-service@12345
+    username: postgres
+    password: superwin
 
 server:
   port: 8091
