@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private Long profileId;
+    private UUID profileId;
 
     private String email;
     private String phoneNumber;
