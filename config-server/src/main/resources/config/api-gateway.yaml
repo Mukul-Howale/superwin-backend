@@ -30,8 +30,6 @@ eureka:
   client:
     service-url:
       defaultZone: ${EUREKA_SERVER_ADDRESS:http://localhost:8761/eureka}
-    register-with-eureka: true
-    fetch-registry: true
 
 management:
   tracing:
