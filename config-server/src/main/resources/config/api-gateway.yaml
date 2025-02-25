@@ -1,28 +1,27 @@
 spring:
   cloud:
     gateway:
-      mvc:
-        routes:
-          - id: user-service
-            uri: lb://user-service
-            predicates:
-              - Path=/user/**
-          - id: profile-service
-            uri: lb://profile-service
-            predicates:
-              - Path=/profile/**
-          - id: game-service
-            uri: lb://game-service
-            predicates:
-              - Path=/game/**
-          - id: transaction-service
-            uri: lb://transaction-service
-            predicates:
-              - Path=/transaction/**
-          - id: referral-service
-            uri: lb://referral-service
-            predicates:
-              - Path=/referral/**
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/user/**
+        - id: profile-service
+          uri: lb://profile-service
+          predicates:
+            - Path=/profile/**
+        - id: game-service
+          uri: lb://game-service
+          predicates:
+            - Path=/game/**
+        - id: transaction-service
+          uri: lb://transaction-service
+          predicates:
+            - Path=/transaction/**
+        - id: referral-service
+          uri: lb://referral-service
+          predicates:
+            - Path=/referral/**
 
 server:
   port: 8060
@@ -33,15 +32,8 @@ eureka:
       defaultZone: ${EUREKA_SERVER_ADDRESS:http://localhost:8761/eureka}
     register-with-eureka: true
     fetch-registry: true
-  instance:
-    prefer-ip-address: true
-    hostname: localhost
 
 management:
   tracing:
     sampling:
       probability: 1.0
-  endpoints:
-    web:
-      exposure:
-        include: "*"
