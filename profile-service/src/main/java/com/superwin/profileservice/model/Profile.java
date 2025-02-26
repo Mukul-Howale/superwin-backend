@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "profile")
+@Table(name = "profiles")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,8 +19,9 @@ public class Profile {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private Long userId;
+    private UUID userId;
 
+    private String userName;
     private Long bonus;
     private Long depositNo;
 

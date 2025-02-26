@@ -1,7 +1,7 @@
 package com.superwin.gameservice.scheduler;
 
-import com.superwin.gameservice.model.WinGo;
-import com.superwin.gameservice.repository.WinGoRepository;
+import com.superwin.gameservice.model.WinGoSession;
+import com.superwin.gameservice.repository.WinGoSessionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class WinGoScheduler {
 
-    private WinGoRepository winGoRepository;
+    private WinGoSessionRepository winGoSessionRepository;
 
     private static final Long INITIAL_TOTAL_AMOUNT = 0L;
     private static final Long INITIAL_MINORITY_AMOUNT = 0L;
@@ -22,7 +22,7 @@ public class WinGoScheduler {
     @Scheduled(fixedRate = 30000) // Runs every 30 seconds
     private void createSession() {
         try {
-            WinGo winGo = WinGo.builder()
+            WinGoSession winGoSession = WinGoSession.builder()
                     .id(UUID.randomUUID())
                     .totalAmount(INITIAL_TOTAL_AMOUNT)
                     .minorityAmount(INITIAL_MINORITY_AMOUNT)
@@ -31,7 +31,7 @@ public class WinGoScheduler {
                     .color(null)
                     .size(null)
                     .build();
-            winGoRepository.save(winGo);
+            winGoSessionRepository.save(winGoSession);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -3,6 +3,7 @@ package com.superwin.gameservice.service;
 import com.superwin.gameservice.client.ProfileClient;
 import com.superwin.gameservice.dto.ProfileDTO;
 import com.superwin.gameservice.dto.WinGoBetRequestDTO;
+import com.superwin.gameservice.dto.WinGoSessionResponseDTO;
 import com.superwin.gameservice.exception.ProfileNotFoundException;
 import com.superwin.gameservice.repository.WinGoBetRepository;
 import lombok.AllArgsConstructor;
@@ -26,8 +27,17 @@ public class WinGoService {
                 throw new ProfileNotFoundException("Profile not found");
 
 
+
             return true;
 
+        } catch (Exception e){
+            throw new RuntimeException();
+        }
+    }
+
+    public WinGoSessionResponseDTO sessionDetails(){
+        try{
+            
         } catch (Exception e){
             throw new RuntimeException();
         }

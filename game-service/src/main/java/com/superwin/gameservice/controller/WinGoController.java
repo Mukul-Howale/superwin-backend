@@ -26,8 +26,9 @@ public class WinGoController {
         return new ResponseEntity<>("WinGoBet rejected", HttpStatus.NOT_ACCEPTABLE);
     }
 
-//    @GetMapping("/session")
-//    public ResponseEntity<WinGoSessionResponseDTO> sessionDetails(){
-//
-//    }
+    @GetMapping("/session")
+    public ResponseEntity<WinGoSessionResponseDTO> sessionDetails(){
+        WinGoSessionResponseDTO winGoSessionResponseDTO = winGoService.sessionDetails();
+
+    }
 }
