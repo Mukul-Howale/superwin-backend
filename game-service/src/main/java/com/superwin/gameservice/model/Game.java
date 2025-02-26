@@ -21,7 +21,7 @@ import java.util.UUID;
 public class Game {
 
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     @Enumerated(EnumType.STRING)
     private GameName name;

@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface WinGoSessionRepository extends JpaRepository<WinGoSession, UUID> {
+
+
 }

@@ -31,6 +31,7 @@ public class WinGoSession {
     private Color color;
     private Size size;
 
+    @Enumerated(EnumType.STRING)
     private GameSessionStatus status;
 
     private LocalDateTime createdAt;

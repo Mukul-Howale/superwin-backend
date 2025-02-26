@@ -4,8 +4,14 @@ import com.superwin.gameservice.client.ProfileClient;
 import com.superwin.gameservice.dto.ProfileDTO;
 import com.superwin.gameservice.dto.WinGoBetRequestDTO;
 import com.superwin.gameservice.dto.WinGoSessionResponseDTO;
+import com.superwin.gameservice.enums.GameName;
+import com.superwin.gameservice.enums.GameStatus;
+import com.superwin.gameservice.enums.GameSessionStatus;
+import com.superwin.gameservice.exception.GameNotFoundException;
+import com.superwin.gameservice.exception.GameUnderMaintenanceException;
 import com.superwin.gameservice.exception.ProfileNotFoundException;
 import com.superwin.gameservice.model.Game;
+import com.superwin.gameservice.model.WinGoSession;
 import com.superwin.gameservice.repository.GameRepository;
 import com.superwin.gameservice.repository.WinGoBetRepository;
 import com.superwin.gameservice.repository.WinGoSessionRepository;
@@ -42,7 +48,16 @@ public class WinGoService {
 
     public WinGoSessionResponseDTO sessionDetails(){
         try{
-            Game game = gameRepository.
+            Optional<Game> optionalGame = gameRepository.findByName(GameName.WIN_GO);
+            if(optionalGame.isEmpty())
+                throw new GameNotFoundException("Game not found");
+
+            if(optionalGame.get().getStatus().equals(GameStatus.UNDER_MAINTENANCE))
+                throw new GameUnderMaintenanceException("Game is under ");
+
+            Optional<WinGoSession> optionalWinGoSession = winGoSessionRepository.findByStatus(GameSessionStatus.ACTIVE);
+
+
         } catch (Exception e){
             throw new RuntimeException();
         }

@@ -18,11 +18,21 @@ public class GlobalExceptionHandler{
 
     @ExceptionHandler(ProfileNotFoundException.class)
     public ResponseEntity<String> handleProfileNotFoundException(ProfileNotFoundException ex){
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(SessionNotFoundException.class)
     public ResponseEntity<String> handleSessionNotFoundException(SessionNotFoundException ex){
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(GameNotFoundException.class)
+    public ResponseEntity<String> handleGameNotFoundException(GameNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(GameUnderMaintenanceException.class)
+    public ResponseEntity<String> handleGameUnderMaintenanceException(GameUnderMaintenanceException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
