@@ -21,10 +21,14 @@ import java.util.UUID;
 public class Game {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID id = UUID.randomUUID();
 
+    @Enumerated(EnumType.STRING)
     private GameName name;
+
+    @Enumerated(EnumType.STRING)
     private GameType type;
+
+    @Enumerated(EnumType.STRING)
     private GameStatus status;
 }

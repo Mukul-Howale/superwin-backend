@@ -15,8 +15,7 @@ import java.util.UUID;
 public class Referral {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID id = UUID.randomUUID();
 
 
 }

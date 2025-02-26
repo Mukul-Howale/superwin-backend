@@ -22,8 +22,7 @@ public class WinGoSession {
 
     // Game session id
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    private UUID id = UUID.randomUUID();
 
     private Long totalAmount;
     private Long minorityAmount;
