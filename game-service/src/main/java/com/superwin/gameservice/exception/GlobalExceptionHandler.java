@@ -1,5 +1,8 @@
 package com.superwin.gameservice.exception;
 
+import com.superwin.gameservice.exception.gameexception.GameNotFoundException;
+import com.superwin.gameservice.exception.gameexception.GameUnderMaintenanceException;
+import com.superwin.gameservice.exception.gameexception.NoWinGoSessionFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,8 +24,8 @@ public class GlobalExceptionHandler{
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(SessionNotFoundException.class)
-    public ResponseEntity<String> handleSessionNotFoundException(SessionNotFoundException ex){
+    @ExceptionHandler(NoActiveWinGoSessionFoundException.class)
+    public ResponseEntity<String> handleSessionNotFoundException(NoActiveWinGoSessionFoundException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
@@ -33,6 +36,11 @@ public class GlobalExceptionHandler{
 
     @ExceptionHandler(GameUnderMaintenanceException.class)
     public ResponseEntity<String> handleGameUnderMaintenanceException(GameUnderMaintenanceException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoWinGoSessionFoundException.class)
+    public ResponseEntity<String> handleNoWinGoSessionFoundException(NoWinGoSessionFoundException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

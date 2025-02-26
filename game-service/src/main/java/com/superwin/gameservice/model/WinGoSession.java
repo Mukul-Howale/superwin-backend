@@ -32,7 +32,7 @@ public class WinGoSession {
     private Size size;
 
     @Enumerated(EnumType.STRING)
-    private GameSessionStatus status;
+    private GameSessionStatus sessionStatus;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

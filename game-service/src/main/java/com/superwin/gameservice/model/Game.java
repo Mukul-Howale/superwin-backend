@@ -1,7 +1,6 @@
 package com.superwin.gameservice.model;
 
 import com.superwin.gameservice.enums.GameName;
-import com.superwin.gameservice.enums.GameSessionStatus;
 import com.superwin.gameservice.enums.GameStatus;
 import com.superwin.gameservice.enums.GameType;
 import jakarta.persistence.*;

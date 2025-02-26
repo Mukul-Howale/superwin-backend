@@ -18,13 +18,17 @@ public class GameService {
     private GameRepository gameRepository;
 
     public Boolean addGame(GameCreaationRequestDTO gameCreaationRequestDTO){
-        Game game = Game.builder()
-                .id(UUID.randomUUID())
-                .name(GameName.WIN_GO)
-                .type(GameType.LOTTERY)
-                .status(GameStatus.PLAYABLE)
-                .build();
-        gameRepository.save(game);
-        return true;
+        try {
+            Game game = Game.builder()
+                    .id(UUID.randomUUID())
+                    .name(gameCreaationRequestDTO.gameName())
+                    .type(gameCreaationRequestDTO.gameType())
+                    .status(gameCreaationRequestDTO.status())
+                    .build();
+            gameRepository.save(game);
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

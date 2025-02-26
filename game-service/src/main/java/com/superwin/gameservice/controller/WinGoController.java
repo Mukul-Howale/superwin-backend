@@ -27,8 +27,8 @@ public class WinGoController {
     }
 
     @GetMapping("/session")
-    public ResponseEntity<WinGoSessionResponseDTO> sessionDetails(){
-        WinGoSessionResponseDTO winGoSessionResponseDTO = winGoService.sessionDetails();
-
+    public ResponseEntity<WinGoSessionResponseDTO> getSessionDetails(){
+        WinGoSessionResponseDTO winGoSessionResponseDTO = winGoService.getSessionDetails();
+        return new ResponseEntity<>(winGoSessionResponseDTO, HttpStatus.OK);
     }
 }
