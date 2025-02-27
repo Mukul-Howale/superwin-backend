@@ -4,5 +4,5 @@ import com.superwin.gameservice.enums.GameStatus;
 import com.superwin.gameservice.enums.GameName;
 import com.superwin.gameservice.enums.GameType;
 
-public record GameCreaationRequestDTO(GameName gameName, GameType gameType, GameStatus status) {
+public record GameCreationRequestDTO(GameName gameName, GameType gameType, GameStatus gameStatus) {
 }
