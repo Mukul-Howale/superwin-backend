@@ -8,6 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -18,22 +21,39 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class WinGoSession {
 
-    // Game session id
     @Id
     private UUID id = UUID.randomUUID();
 
+    @Column(name = "total_amount", nullable = false)
     private Long totalAmount;
+
+    @Column(name = "minority_amount", nullable = false)
     private Long minorityAmount;
+
+    @Column(name = "majority_amount", nullable = false)
     private Long majorityAmount;
+
+    @Column(name = "number", nullable = false)
     private Integer number;
+
+    @Column(name = "color", nullable = false)
     private Color color;
+
+    @Column(name = "size", nullable = false)
     private Size size;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "session_status", nullable = false)
     private GameSessionStatus sessionStatus;
 
+    @CreatedDate
+    @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 }
