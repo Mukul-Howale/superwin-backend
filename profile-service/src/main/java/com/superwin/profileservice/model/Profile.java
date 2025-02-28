@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Profile {
 
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     private UUID userId;
 
