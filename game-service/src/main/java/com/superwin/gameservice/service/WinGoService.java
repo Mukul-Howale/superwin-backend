@@ -84,38 +84,3 @@ public class WinGoService {
         }
     }
 }
-
-/**
- * TO-DO:
- *  Adding tables to database
- *  - win_go_sessions
- *  - win_go_bets
- *
- *  Figuring out api-gateway
- *
- *  Adding logger
- *
- *  Creating common return object from service layer
- *  to controller layer
- *  e.g. In case of
- *  - exceptions, it should return a string and boolean
- *  - returning response dto, return string and dto
- *  - etc.
- *
- *
- *  Changing legacy scheduler to quartz scheduler
- *
- *  Testing getSessionDetails API
- *
- *  Starting bet API
- *
- *  Creating ClickUp superwin workspace
- *
- *  Learning spring security
- *
- *  Looking for investors
- *  - contacts
- *
- *  Working on pitch deck
- *
- */
