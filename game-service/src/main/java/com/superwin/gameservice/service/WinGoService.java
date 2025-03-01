@@ -63,7 +63,7 @@ public class WinGoService {
                 throw new GameNotFoundException("Game not found");
 
             if(optionalGame.get().getStatus().equals(GameStatus.UNDER_MAINTENANCE))
-                throw new GameUnderMaintenanceException("Game is under");
+                throw new GameUnderMaintenanceException("Game is under maintenance");
 
             List<WinGoSession> optionalWinGoSessionList = winGoSessionRepository.
                     findAll(PageRequest.of(0, 11))
