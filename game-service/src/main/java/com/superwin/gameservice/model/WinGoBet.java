@@ -25,7 +25,7 @@ public class WinGoBet {
     private UUID id = UUID.randomUUID();
 
     @Column(name = "profile_id", nullable = false)
-    private Long profileId;
+    private UUID profileId;
 
     @Column(name = "session_id", nullable = false)
     private Long sessionId;
