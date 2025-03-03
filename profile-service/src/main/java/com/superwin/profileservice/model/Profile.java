@@ -31,7 +31,7 @@ public class Profile {
     @Column(name = "bonus", nullable = false)
     private Long bonus;
 
-    @Column(name = "dsposit_no", nullable = false)
+    @Column(name = "deposit_no", nullable = false)
     private Long depositNo;
 
     @CreatedDate
