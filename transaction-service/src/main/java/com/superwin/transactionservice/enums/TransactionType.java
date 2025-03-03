@@ -2,5 +2,6 @@ package com.superwin.transactionservice.enums;
 
 public enum TransactionType {
     DEPOSIT,
-    WITHDRAW
+    WITHDRAW,
+    TRANSFER // from one wallet to another
 }
