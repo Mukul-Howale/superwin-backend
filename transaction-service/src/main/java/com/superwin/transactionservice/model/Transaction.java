@@ -24,7 +24,7 @@ import java.util.UUID;
 public class Transaction {
 
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     @Column(name = "profile_id", nullable = false)
     private Long profileId;
