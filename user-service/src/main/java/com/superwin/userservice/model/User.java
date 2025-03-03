@@ -21,16 +21,22 @@ import java.util.UUID;
 public class User {
 
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "phone_number")
     private String phoneNumber;
+
+    @Column(name = "password")
     private String password;
 
     @CreatedDate
-    @Column(updatable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 }
