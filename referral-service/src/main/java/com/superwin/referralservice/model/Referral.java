@@ -25,7 +25,21 @@ public class Referral {
     @Column(name = "profile_id")
     private UUID profileId;
 
+    @Column(name = "level_1")
+    private String level1;
 
+    @Column(name = "level_2")
+    private String level2;
+
+    @Column(name = "level_3")
+    private String level3;
+
+    @Column(name = "level_4")
+    private String level4;
+
+    @Column(name = "level_5")
+    private String level5;
+    
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
