@@ -22,24 +22,24 @@ public class Referral {
     @Id
     private UUID id;
 
-    @Column(name = "profile_id")
+    @Column(name = "profile_id", nullable = false)
     private UUID profileId;
 
-    @Column(name = "level_1")
+    @Column(name = "level_1", columnDefinition = "jsonb")
     private String level1;
 
-    @Column(name = "level_2")
+    @Column(name = "level_2", columnDefinition = "jsonb")
     private String level2;
 
-    @Column(name = "level_3")
+    @Column(name = "level_3", columnDefinition = "jsonb")
     private String level3;
 
-    @Column(name = "level_4")
+    @Column(name = "level_4", columnDefinition = "jsonb")
     private String level4;
 
-    @Column(name = "level_5")
+    @Column(name = "level_5", columnDefinition = "jsonb")
     private String level5;
-    
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

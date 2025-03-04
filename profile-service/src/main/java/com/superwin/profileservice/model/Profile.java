@@ -34,6 +34,12 @@ public class Profile {
     @Column(name = "deposit_no", nullable = false)
     private Long depositNo;
 
+    @Column(name = "referral_code", nullable = false, updatable = false)
+    private Long referralCode;
+
+    @Column(name = "referred_code", updatable = false)
+    private Long referredCode;
+
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
