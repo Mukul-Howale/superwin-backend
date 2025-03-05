@@ -38,7 +38,7 @@ public class WinGoService {
     public Boolean bet(WinGoBetRequestDTO winGoBetRequestDTO){
         try {
             ResponseEntity<ProfileDTO> profileDTO = profileClient.getById(winGoBetRequestDTO.profileId());
-            if (profileDTO.getStatusCode().isSameCodeAs(HttpStatus.BAD_REQUEST))
+            if (!profileDTO.getStatusCode().isSameCodeAs(HttpStatus.OK))
                 throw new ProfileNotFoundException("Profile not found");
 
 
