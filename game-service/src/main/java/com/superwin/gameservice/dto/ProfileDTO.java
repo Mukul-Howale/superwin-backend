@@ -8,6 +8,8 @@ public record ProfileDTO(
         Long userId,
         Long bonus,
         Long depositNo,
+        Long referralCode,
+        Long referredCode,
         LocalDateTime createdAt,
         LocalDateTime updatedAt) {
 }

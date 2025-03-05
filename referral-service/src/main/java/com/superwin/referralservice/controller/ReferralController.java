@@ -1,6 +1,6 @@
 package com.superwin.referralservice.controller;
 
-import com.superwin.referralservice.dto.AddReferralRequest;
+import com.superwin.referralservice.dto.AddReferralRequestDTO;
 import com.superwin.referralservice.service.ReferralService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,8 @@ public class ReferralController {
     private ReferralService referralService;
 
     @PostMapping("/add")
-    public ResponseEntity<String> addReferral(@RequestBody AddReferralRequest addReferralRequest){
-        if(!referralService.addReferral(addReferralRequest))
+    public ResponseEntity<String> addReferral(@RequestBody AddReferralRequestDTO addReferralRequestDTO){
+        if(!referralService.addReferral(addReferralRequestDTO))
             return new ResponseEntity<>("Referral not added", HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>("Referral added", HttpStatus.ACCEPTED);
     }

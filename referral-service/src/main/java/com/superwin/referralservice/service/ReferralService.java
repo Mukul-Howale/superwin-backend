@@ -1,7 +1,8 @@
 package com.superwin.referralservice.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.superwin.referralservice.dto.AddReferralRequest;
+import com.superwin.referralservice.dto.AddReferralRequestDTO;
 import com.superwin.referralservice.model.Referral;
 import com.superwin.referralservice.repository.ReferralRepository;
 import lombok.AllArgsConstructor;
@@ -20,23 +21,20 @@ public class ReferralService {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
 
-    public Boolean addReferral(AddReferralRequest addReferralRequest){
+    public Boolean addReferral(AddReferralRequestDTO addReferralRequestDTO){
         try{
-            Referral referral = referralRepository.findById(addReferralRequest.referredTo())
+            Referral referral = referralRepository.findById(addReferralRequestDTO.referredTo())
                     .orElseThrow(() -> new RuntimeException("Referral not found"));
 
-            String levelColumn = "level_" + level;  // Determine which level to update
-
-            // Get existing referrals
-            List<UUID> referralList = getLevelAsList(levelColumn);
-
-            // Append new referral if not already present
-            if (!referralList.contains(newReferralId)) {
-                referralList.add(newReferralId);
-            }
-
-            // Update the JSON field
-            referral.setLevelAsList(levelColumn, referralList);
+//            List<UUID> referralList = getLevelAsList(levelColumn);
+//
+//            // Append new referral if not already present
+//            if (!referralList.contains(newReferralId)) {
+//                referralList.add(newReferralId);
+//            }
+//
+//            // Update the JSON field
+//            referral.setLevelAsList(levelColumn, referralList);
 
             // Save updated referral entity
             referralRepository.save(referral);
