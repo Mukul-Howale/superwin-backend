@@ -38,8 +38,8 @@ public class ReferralService {
             List<UUID> referralList = getLevelAsList(referral.getLevel1());
 
             // Append new referral if not already present
-            if (!referralList.contains(profileFilterDTO.profileId())) {
-                referralList.add(profileFilterDTO.profileId());
+            if (!referralList.contains(addReferralRequestDTO.referredTo())) {
+                referralList.add(addReferralRequestDTO.referredTo());
             }
 
             // Update the JSON field
