@@ -33,9 +33,9 @@ public class ProfileService {
         }
     }
 
-    public ProfileFilterDTO getByReferralCode(Long referralCode){
+    public ProfileFilterDTO getProfileFilterByReferralCode(Long referralCode){
         try{
-            Optional<ProfileFilterDTO> profileFilterDTO = profileRepository.getByReferralCode(referralCode);
+            Optional<ProfileFilterDTO> profileFilterDTO = profileRepository.getProfileFilterByReferralCode(referralCode);
             if (profileFilterDTO.isEmpty()) throw new NoReferralFoundException("No referral found for the given code");
             return profileFilterDTO.get();
         }catch (Exception e){

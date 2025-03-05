@@ -22,8 +22,14 @@ public class Referral {
     @Id
     private UUID id;
 
-    @Column(name = "profile_id", nullable = false)
+    @Column(name = "profile_id", nullable = false,updatable = false)
     private UUID profileId;
+
+    @Column(name = "referral_code", nullable = false, updatable = false)
+    private Long referralCode;
+
+    @Column(name = "referred_code")
+    private Long referredCode;
 
     @Column(name = "level_1", columnDefinition = "jsonb")
     private String level1;
@@ -47,5 +53,17 @@ public class Referral {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    public String getLevelByNumber(Integer num){
+        return switch (num) {
+            case 1 -> getLevel1();
+            case 2 -> getLevel2();
+            case 3 -> getLevel3();
+            case 4 -> getLevel4();
+            case 5 -> getLevel5();
+            default -> "Done!";
+        };
+
+    }
 
 }

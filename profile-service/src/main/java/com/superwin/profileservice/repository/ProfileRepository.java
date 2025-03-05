@@ -15,5 +15,5 @@ public interface ProfileRepository extends JpaRepository<Profile, UUID> {
 
     @Query("SELECT new com.superwin.profileservice.dto.ProfileFilterDTO(p.id, p.referredCode) " +
             "FROM Profile p WHERE p.referralCode = :referredCode")
-    Optional<ProfileFilterDTO> getByReferralCode(@Param("referralCode") Long referredCode);
+    Optional<ProfileFilterDTO> getProfileFilterByReferralCode(@Param("referralCode") Long referredCode);
 }

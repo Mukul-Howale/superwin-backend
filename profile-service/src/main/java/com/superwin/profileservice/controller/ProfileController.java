@@ -26,7 +26,7 @@ public class ProfileController {
     }
 
     @GetMapping("/{referralCode}")
-    public ResponseEntity<ProfileFilterDTO> getByReferralCode(@PathVariable Long referralCode){
-        return new ResponseEntity<>(profileService.getByReferralCode(referralCode), HttpStatus.OK);
+    public ResponseEntity<ProfileFilterDTO> getProfileFilterByReferralCode(@PathVariable Long referralCode){
+        return new ResponseEntity<>(profileService.getProfileFilterByReferralCode(referralCode), HttpStatus.OK);
     }
 }

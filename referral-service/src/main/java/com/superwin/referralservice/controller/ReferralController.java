@@ -19,8 +19,7 @@ public class ReferralController {
 
     @PostMapping("/add")
     public ResponseEntity<String> addReferral(@RequestBody AddReferralRequestDTO addReferralRequestDTO){
-        if(!referralService.addReferral(addReferralRequestDTO))
-            return new ResponseEntity<>("Referral not added", HttpStatus.INTERNAL_SERVER_ERROR);
+        referralService.addReferral(addReferralRequestDTO);
         return new ResponseEntity<>("Referral added", HttpStatus.ACCEPTED);
     }
 }
