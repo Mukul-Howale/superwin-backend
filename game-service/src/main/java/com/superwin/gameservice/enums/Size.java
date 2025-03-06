@@ -2,5 +2,6 @@ package com.superwin.gameservice.enums;
 
 public enum Size {
     BIG,
-    SMALL
+    SMALL,
+    INITIAL_SIZE
 }

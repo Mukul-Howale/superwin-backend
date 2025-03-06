@@ -1,5 +1,8 @@
 package com.superwin.gameservice.scheduler;
 
+import com.superwin.gameservice.enums.Color;
+import com.superwin.gameservice.enums.Size;
+import com.superwin.gameservice.exception.GeneralException;
 import com.superwin.gameservice.model.WinGoSession;
 import com.superwin.gameservice.repository.WinGoSessionRepository;
 import lombok.AllArgsConstructor;
@@ -30,12 +33,12 @@ public class WinGoScheduler {
                     .minorityAmount(INITIAL_MINORITY_AMOUNT)
                     .majorityAmount(INITIAL_MAJORITY_AMOUNT)
                     .number(INITIAL_NUMBER)
-                    .color(null)
-                    .size(null)
+                    .color(Color.INITIAL_COLOR)
+                    .size(Size.INITIAL_SIZE)
                     .build();
             winGoSessionRepository.save(winGoSession);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new GeneralException("Unhandled Exception: void createSession(), WinGoScheduler",e);
         }
     }
 

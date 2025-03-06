@@ -3,5 +3,6 @@ package com.superwin.gameservice.enums;
 public enum Color {
     RED,
     GREEN,
-    PURPLE
+    PURPLE,
+    INITIAL_COLOR
 }

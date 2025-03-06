@@ -18,6 +18,11 @@ public class GlobalExceptionHandler{
      * to be caught in catch block where ever used
      */
 
+    @ExceptionHandler(GeneralException.class)
+    public ResponseEntity<String> handleGeneralException(GeneralException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(ProfileNotFoundException.class)
     public ResponseEntity<String> handleProfileNotFoundException(ProfileNotFoundException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);

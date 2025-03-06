@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "win_go_sessions")
+@Table(name = "win_go_sessions", schema = "game_service")
 @Data
 @Builder
 @AllArgsConstructor
