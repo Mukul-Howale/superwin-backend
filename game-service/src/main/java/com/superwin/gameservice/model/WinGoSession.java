@@ -25,7 +25,7 @@ import java.util.UUID;
 public class WinGoSession {
 
     @Id
-    private UUID id = UUID.randomUUID();
+    private UUID id;
 
     @Column(name = "total_amount", nullable = false)
     private Long totalAmount;

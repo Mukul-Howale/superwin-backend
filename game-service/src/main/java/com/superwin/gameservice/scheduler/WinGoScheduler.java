@@ -1,11 +1,13 @@
 package com.superwin.gameservice.scheduler;
 
 import com.superwin.gameservice.enums.Color;
+import com.superwin.gameservice.enums.GameSessionStatus;
 import com.superwin.gameservice.enums.Size;
 import com.superwin.gameservice.exception.GeneralException;
 import com.superwin.gameservice.model.WinGoSession;
 import com.superwin.gameservice.repository.WinGoSessionRepository;
 import lombok.AllArgsConstructor;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,7 @@ public class WinGoScheduler {
     // Cron expression syntax which runs every 30 seconds
     // Runs at 0s, 30s, 60s, ...
     @Scheduled(cron = "*/30 * * * * *")
+    @SchedulerLock(name = "create_session", lockAtMostFor = "30s", lockAtLeastFor = "5s")
     public void createSession() {
         try {
             WinGoSession winGoSession = WinGoSession.builder()
@@ -35,16 +38,18 @@ public class WinGoScheduler {
                     .number(INITIAL_NUMBER)
                     .color(Color.INITIAL_COLOR)
                     .size(Size.INITIAL_SIZE)
+                    .sessionStatus(GameSessionStatus.ACTIVE)
                     .build();
             winGoSessionRepository.save(winGoSession);
         } catch (Exception e) {
-            throw new GeneralException("Unhandled Exception: void createSession(), WinGoScheduler",e);
+            throw new GeneralException("Unhandled Exception: void createSession(), WinGoScheduler \n PrintStack: " + e);
         }
     }
 
     // Cron expression syntax which runs every 25th second for 5 seconds of 30 seconds cycle
     // Runs at 25s, 55s, 85s, ...
     @Scheduled(cron = "25/30 * * * * *")
+    @SchedulerLock(name = "last_run", lockAtMostFor = "5s", lockAtLeastFor = "1s")
     public void lastRun(){
         try{
             // using game id get all the bets data
