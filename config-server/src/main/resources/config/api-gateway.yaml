@@ -13,7 +13,7 @@ spring:
         - id: game-service
           uri: lb://game-service
           predicates:
-            - Path=/game/**
+            - Path=/game/**, /win-go/**
         - id: transaction-service
           uri: lb://transaction-service
           predicates:
