@@ -56,8 +56,9 @@ public class WinGoService {
      * Get top 11 win_go game sessions
      * Active one is filtered out
      */
-    public WinGoSessionResponseDTO getSessionDetails(){
+    public WinGoSessionResponseDTO getSessions(){
         try{
+            // Get game details by game name
             Optional<Game> optionalGame = gameRepository.findByName(GameName.WIN_GO);
             if(optionalGame.isEmpty())
                 throw new GameNotFoundException("Game not found");
@@ -69,14 +70,14 @@ public class WinGoService {
                     findAll(PageRequest.of(0, 11))
                     .getContent();
             if (optionalWinGoSessionList.isEmpty())
-                throw new NoWinGoSessionFoundException("No active win_go session");
+                throw new NoWinGoSessionFoundException("No win_go sessions found");
 
             Optional<WinGoSession> activeWinGoSession = optionalWinGoSessionList
                     .stream()
                     .filter(winGoSession -> winGoSession.getSessionStatus().equals(GameSessionStatus.ACTIVE))
                     .findFirst();
             if (activeWinGoSession.isEmpty())
-                throw new NoActiveWinGoSessionFoundException("No active win_go session");
+                throw new NoActiveWinGoSessionFoundException("No active win_go session found");
 
             return new WinGoSessionResponseDTO(activeWinGoSession.get(), optionalWinGoSessionList);
         } catch (Exception e){

@@ -3,10 +3,8 @@ package com.superwin.gameservice.scheduler;
 import com.superwin.gameservice.model.WinGoSession;
 import com.superwin.gameservice.repository.WinGoSessionRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
@@ -41,8 +39,8 @@ public class WinGoScheduler {
         }
     }
 
+    // Cron expression syntax which runs every 25th second for 5 seconds of 30 seconds cycle
     // Runs at 25s, 55s, 85s, ...
-
     @Scheduled(cron = "25/30 * * * * *")
     public void lastRun(){
         try{
