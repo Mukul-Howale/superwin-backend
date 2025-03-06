@@ -17,6 +17,7 @@ public class ShedLockConfig {
         return new JdbcTemplateLockProvider(
                 JdbcTemplateLockProvider.Configuration.builder()
                         .withJdbcTemplate(new JdbcTemplate(dataSource))
+                        .withTableName("game_service.shedlock")
                         .usingDbTime() // Ensures database time is used for consistency
                         .build()
         );
