@@ -105,13 +105,13 @@
 		<dependency>
 			<groupId>net.javacrumbs.shedlock</groupId>
 			<artifactId>shedlock-spring</artifactId>
-			<version>5.8.0</version>
+			<version>6.3.0</version>
 		</dependency>
 		<!-- ShedLock for JDBC (PostgresSQL, MySQL, etc.) -->
 		<dependency>
 			<groupId>net.javacrumbs.shedlock</groupId>
 			<artifactId>shedlock-provider-jdbc-template</artifactId>
-			<version>5.8.0</version>
+			<version>6.3.0</version>
 		</dependency>
 		<!-- Spring Boot JDBC Starter (If not already included) -->
 		<dependency>

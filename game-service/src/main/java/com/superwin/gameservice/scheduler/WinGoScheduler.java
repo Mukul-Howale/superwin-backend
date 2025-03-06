@@ -3,12 +3,14 @@ package com.superwin.gameservice.scheduler;
 import com.superwin.gameservice.model.WinGoSession;
 import com.superwin.gameservice.repository.WinGoSessionRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-@Service
+@Component
 @AllArgsConstructor
 public class WinGoScheduler {
 
@@ -19,8 +21,10 @@ public class WinGoScheduler {
     private static final Long INITIAL_MAJORITY_AMOUNT = 0L;
     private static final Integer INITIAL_NUMBER = -1;
 
-    @Scheduled(fixedRate = 30000) // Runs every 30 seconds
-    private void createSession() {
+    // Cron expression syntax which runs every 30 seconds
+    // Runs at 0s, 30s, 60s, ...
+    @Scheduled(cron = "*/30 * * * * *")
+    public void createSession() {
         try {
             WinGoSession winGoSession = WinGoSession.builder()
                     .id(UUID.randomUUID())
@@ -37,8 +41,10 @@ public class WinGoScheduler {
         }
     }
 
-    @Scheduled(fixedRate = 25000)
-    private void lastRun(){
+    // Runs at 25s, 55s, 85s, ...
+
+    @Scheduled(cron = "25/30 * * * * *")
+    public void lastRun(){
         try{
             // using game id get all the bets data
             // segregate data account to the parameters (e.g. big, green, etc.)

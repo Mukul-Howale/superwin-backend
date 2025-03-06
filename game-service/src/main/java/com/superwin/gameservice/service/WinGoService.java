@@ -11,7 +11,7 @@ import com.superwin.gameservice.exception.NoActiveWinGoSessionFoundException;
 import com.superwin.gameservice.exception.gameexception.GameNotFoundException;
 import com.superwin.gameservice.exception.gameexception.GameUnderMaintenanceException;
 import com.superwin.gameservice.exception.ProfileNotFoundException;
-import com.superwin.gameservice.exception.gameexception.NoWinGoSessionFoundException;
+import com.superwin.gameservice.exception.NoWinGoSessionFoundException;
 import com.superwin.gameservice.model.Game;
 import com.superwin.gameservice.model.WinGoSession;
 import com.superwin.gameservice.repository.GameRepository;
