@@ -74,10 +74,52 @@ public class WinGoScheduler {
     }
 
     // Cron expression syntax which runs every 25th second for 5 seconds of 30 seconds cycle
-    // Runs at 25s, 55s, 85s, ...
+    // Runs at 25s, 55s, 1.25m, ...
     @Scheduled(cron = "25/30 * * * * *")
-    @SchedulerLock(name = "last_run", lockAtMostFor = "5s", lockAtLeastFor = "1s")
+    @SchedulerLock(name = "last_run_30s", lockAtMostFor = "5s", lockAtLeastFor = "1s")
     public void lastRun30S(){
+        try{
+            // using game id get all the bets data
+            // segregate data account to the parameters (e.g. big, green, etc.)
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Cron expression syntax which runs every 55th second for 5 seconds of 1 minutes cycle
+    // Runs at 55s, 1.55m, 2.85m, ...
+    @Scheduled(cron = "55 * * * * *")
+    @SchedulerLock(name = "last_run_1m", lockAtMostFor = "5s", lockAtLeastFor = "1s")
+    public void lastRun1M(){
+        try{
+            // using game id get all the bets data
+            // segregate data account to the parameters (e.g. big, green, etc.)
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Cron expression syntax which runs every 175th second for 5 seconds of 3 minutes cycle
+    // Runs at 2.55m, 5.55m, 8.55m, ...
+    @Scheduled(cron = "55 */3 * * * *")
+    @SchedulerLock(name = "last_run_3m", lockAtMostFor = "5s", lockAtLeastFor = "1s")
+    public void lastRun3M(){
+        try{
+            // using game id get all the bets data
+            // segregate data account to the parameters (e.g. big, green, etc.)
+
+        }catch (Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Cron expression syntax which runs every 255th second for 5 seconds of 5 minutes cycle
+    // Runs at 4.55m, 9.55m, 14.55m, ...
+    @Scheduled(cron = "55 */5 * * * *")
+    @SchedulerLock(name = "last_run_5m", lockAtMostFor = "5s", lockAtLeastFor = "1s")
+    public void lastRun5M(){
         try{
             // using game id get all the bets data
             // segregate data account to the parameters (e.g. big, green, etc.)

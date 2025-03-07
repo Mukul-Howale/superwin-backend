@@ -62,7 +62,7 @@ public class WinGoService {
             if(optionalGame.get().getStatus().equals(GameStatus.UNDER_MAINTENANCE))
                 throw new GameUnderMaintenanceException("Game is under maintenance");
 
-            // Get list of recent 11 wingo sessions
+            // Get list of recent 11 wingo sessions based on time period
             List<WinGoSession> optionalWinGoSessionList = winGoSessionRepository.
                     findAllByTime(PageRequest.of(0, 11), time)
                     .getContent();
