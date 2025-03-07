@@ -1,5 +1,6 @@
 package com.superwin.gameservice.repository;
 
+import com.superwin.gameservice.enums.Time;
 import com.superwin.gameservice.model.WinGoSession;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,7 @@ public interface WinGoSessionRepository extends JpaRepository<WinGoSession, UUID
     @NonNull
     Page<WinGoSession> findAll(@NonNull Pageable pageable);
 
-    @Query("SELECT w FROM WinGoSession w ORDER BY w.time")
+    @Query("SELECT w FROM WinGoSession w WHERE w.time = :time")
     @NonNull
-    Page<WinGoSession> findAllByTime(@NonNull Pageable pageable);
+    Page<WinGoSession> findAllByTime(@NonNull Pageable pageable, @Param("time")Time time);
 }

@@ -3,6 +3,7 @@ package com.superwin.gameservice.model;
 import com.superwin.gameservice.enums.Color;
 import com.superwin.gameservice.enums.Size;
 import com.superwin.gameservice.enums.GameSessionStatus;
+import com.superwin.gameservice.enums.Time;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,6 +47,10 @@ public class WinGoSession {
     @Enumerated(EnumType.STRING)
     @Column(name = "size", nullable = false)
     private Size size;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "time", nullable = false)
+    private Time time;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "session_status", nullable = false)

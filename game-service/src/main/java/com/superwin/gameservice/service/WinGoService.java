@@ -64,7 +64,7 @@ public class WinGoService {
 
             // Get list of recent 11 wingo sessions
             List<WinGoSession> optionalWinGoSessionList = winGoSessionRepository.
-                    findAll(PageRequest.of(0, 11))
+                    findAllByTime(PageRequest.of(0, 11), time)
                     .getContent();
             if (optionalWinGoSessionList.isEmpty())
                 throw new NoWinGoSessionFoundException("No win_go sessions found");
