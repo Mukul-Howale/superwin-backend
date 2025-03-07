@@ -47,4 +47,9 @@ public class GlobalExceptionHandler{
     public ResponseEntity<String> handleNoWinGoSessionFoundException(NoWinGoSessionFoundException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(IllegalBetException.class)
+    public ResponseEntity<String> handleIllegalBetException(IllegalBetException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

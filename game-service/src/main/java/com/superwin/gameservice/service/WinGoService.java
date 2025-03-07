@@ -8,12 +8,11 @@ import com.superwin.gameservice.enums.GameName;
 import com.superwin.gameservice.enums.GameStatus;
 import com.superwin.gameservice.enums.GameSessionStatus;
 import com.superwin.gameservice.enums.Time;
-import com.superwin.gameservice.exception.NoActiveWinGoSessionFoundException;
+import com.superwin.gameservice.exception.*;
 import com.superwin.gameservice.exception.gameexception.GameNotFoundException;
 import com.superwin.gameservice.exception.gameexception.GameUnderMaintenanceException;
-import com.superwin.gameservice.exception.ProfileNotFoundException;
-import com.superwin.gameservice.exception.NoWinGoSessionFoundException;
 import com.superwin.gameservice.model.Game;
+import com.superwin.gameservice.model.WinGoBet;
 import com.superwin.gameservice.model.WinGoSession;
 import com.superwin.gameservice.repository.GameRepository;
 import com.superwin.gameservice.repository.WinGoBetRepository;
@@ -26,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -36,18 +36,44 @@ public class WinGoService {
     private GameRepository gameRepository;
     private ProfileClient profileClient;
 
+    private static final Integer INITIAL_NUMBER = -1;
+
     public Boolean bet(WinGoBetRequestDTO winGoBetRequestDTO){
         try {
-            ResponseEntity<ProfileDTO> profileDTO = profileClient.getById(winGoBetRequestDTO.profileId());
-            if (!profileDTO.getStatusCode().isSameCodeAs(HttpStatus.OK))
+            if (!profileClient.getById(winGoBetRequestDTO.profileId()).getStatusCode().isSameCodeAs(HttpStatus.OK))
                 throw new ProfileNotFoundException("Profile not found");
 
+            if(winGoSessionRepository.findById(winGoBetRequestDTO.sessionId()).isEmpty())
+                throw new NoWinGoSessionFoundException("No win_go sessions found");
 
+            // checking bet amount i.e. non-negative, not null,
+            // checking number i.e. between 0 and 9 (inclusive)
+            // checking color i.e. comes under the enums
+            // checking size i.e. comes under the enums
+            // checking time i.e. comes under the enums
+            // any one of the color, number, size should not be null
+            // frontend will send null for the rest
+
+            if(winGoBetRequestDTO.number() == null
+            && winGoBetRequestDTO.color() == null
+            && winGoBetRequestDTO.size() == null)
+                throw new IllegalBetException("Bet is illegal");
+
+            WinGoBet winGoBet = WinGoBet.builder()
+                    .id(UUID.randomUUID())
+                    .profileId(winGoBetRequestDTO.profileId())
+                    .sessionId(winGoBetRequestDTO.sessionId())
+                    .betAmount(winGoBetRequestDTO.betAmount())
+                    .number()
+                    .color()
+                    .size()
+                    .time()
+                    .build();
 
             return true;
 
         } catch (Exception e){
-            throw new RuntimeException();
+            throw new GeneralException("Unhandled Exception: Boolean bet(WinGoBetRequestDTO winGoBetRequestDTO), WinGoService" + e);
         }
     }
 
@@ -80,7 +106,7 @@ public class WinGoService {
             // Return sessions list
             return new WinGoSessionResponseDTO(activeWinGoSession.get(), optionalWinGoSessionList);
         } catch (Exception e){
-            throw new RuntimeException();
+            throw new GeneralException("Unhandled Exception: WinGoSessionResponseDTO getSessions(Time time), WinGoService" + e);
         }
     }
 }

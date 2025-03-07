@@ -49,7 +49,7 @@ public class WinGoSession {
     private Size size;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "time", nullable = false)
+    @Column(name = "time", nullable = false, updatable = false)
     private Time time;
 
     @Enumerated(EnumType.STRING)

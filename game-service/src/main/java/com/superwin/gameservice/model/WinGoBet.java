@@ -31,7 +31,7 @@ public class WinGoBet {
     private UUID profileId;
 
     @Column(name = "session_id", nullable = false, updatable = false)
-    private Long sessionId;
+    private UUID sessionId;
 
     @Column(name = "bet_amount", nullable = false, updatable = false)
     private Long betAmount;
