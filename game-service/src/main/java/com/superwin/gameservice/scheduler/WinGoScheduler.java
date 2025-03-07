@@ -51,7 +51,7 @@ public class WinGoScheduler {
 
     // Cron expression syntax which runs every 3 minute
     // Runs at 3m, 6m, 9m, ...
-    @Scheduled(cron = "* */3 * * * *")
+    @Scheduled(cron = "0 */3 * * * *")
     @SchedulerLock(name = "create_session_3m", lockAtMostFor = "3m", lockAtLeastFor = "5s")
     public void createSession3M() {
         try {
@@ -63,7 +63,7 @@ public class WinGoScheduler {
 
     // Cron expression syntax which runs every 5 minute
     // Runs at 5m, 10m, 15m, ...
-    @Scheduled(cron = "* */5 * * * *")
+    @Scheduled(cron = "0 */5 * * * *")
     @SchedulerLock(name = "create_session_5m", lockAtMostFor = "5m", lockAtLeastFor = "5s")
     public void createSession5M() {
         try {
