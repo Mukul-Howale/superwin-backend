@@ -39,7 +39,7 @@ public class WinGoScheduler {
 
     // Cron expression syntax which runs every 1 minute
     // Runs at 1m, 2m, 3m, ...
-    @Scheduled(cron = "* */1 * * * *")
+    @Scheduled(cron = "0 * * * * *")
     @SchedulerLock(name = "create_session_1m", lockAtMostFor = "1m", lockAtLeastFor = "5s")
     public void createSession1M() {
         try {
@@ -79,6 +79,7 @@ public class WinGoScheduler {
     @SchedulerLock(name = "last_run_30s", lockAtMostFor = "5s", lockAtLeastFor = "1s")
     public void lastRun30S(){
         try{
+            System.out.println("30s");
             // using game id get all the bets data
             // segregate data account to the parameters (e.g. big, green, etc.)
 
@@ -89,10 +90,11 @@ public class WinGoScheduler {
 
     // Cron expression syntax which runs every 55th second for 5 seconds of 1 minutes cycle
     // Runs at 55s, 1.55m, 2.85m, ...
-    @Scheduled(cron = "55 * * * * *")
+    @Scheduled(cron = "55 */1 * * * *")
     @SchedulerLock(name = "last_run_1m", lockAtMostFor = "5s", lockAtLeastFor = "1s")
     public void lastRun1M(){
         try{
+            System.out.println("1m");
             // using game id get all the bets data
             // segregate data account to the parameters (e.g. big, green, etc.)
 
@@ -107,6 +109,7 @@ public class WinGoScheduler {
     @SchedulerLock(name = "last_run_3m", lockAtMostFor = "5s", lockAtLeastFor = "1s")
     public void lastRun3M(){
         try{
+            System.out.println("3m");
             // using game id get all the bets data
             // segregate data account to the parameters (e.g. big, green, etc.)
 
@@ -121,6 +124,7 @@ public class WinGoScheduler {
     @SchedulerLock(name = "last_run_5m", lockAtMostFor = "5s", lockAtLeastFor = "1s")
     public void lastRun5M(){
         try{
+            System.out.println("5m");
             // using game id get all the bets data
             // segregate data account to the parameters (e.g. big, green, etc.)
 
