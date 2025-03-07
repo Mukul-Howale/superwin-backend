@@ -39,9 +39,11 @@ public class WinGoSession {
     @Column(name = "number", nullable = false)
     private Integer number;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "color", nullable = false)
     private Color color;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "size", nullable = false)
     private Size size;
 

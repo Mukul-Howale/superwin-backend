@@ -7,6 +7,7 @@ import com.superwin.gameservice.dto.WinGoSessionResponseDTO;
 import com.superwin.gameservice.enums.GameName;
 import com.superwin.gameservice.enums.GameStatus;
 import com.superwin.gameservice.enums.GameSessionStatus;
+import com.superwin.gameservice.enums.Time;
 import com.superwin.gameservice.exception.NoActiveWinGoSessionFoundException;
 import com.superwin.gameservice.exception.gameexception.GameNotFoundException;
 import com.superwin.gameservice.exception.gameexception.GameUnderMaintenanceException;
@@ -50,28 +51,25 @@ public class WinGoService {
         }
     }
 
-    /**
-     * Get game details by game name
-     * If game is under maintenance, return exception
-     * Get top 11 win_go game sessions
-     * Active one is filtered out
-     */
-    public WinGoSessionResponseDTO getSessions(){
+    public WinGoSessionResponseDTO getSessions(Time time){
         try{
             // Get game details by game name
             Optional<Game> optionalGame = gameRepository.findByName(GameName.WIN_GO);
             if(optionalGame.isEmpty())
                 throw new GameNotFoundException("Game not found");
 
+            // Check if game is playable or under maintenance
             if(optionalGame.get().getStatus().equals(GameStatus.UNDER_MAINTENANCE))
                 throw new GameUnderMaintenanceException("Game is under maintenance");
 
+            // Get list of recent 11 wingo sessions
             List<WinGoSession> optionalWinGoSessionList = winGoSessionRepository.
                     findAll(PageRequest.of(0, 11))
                     .getContent();
             if (optionalWinGoSessionList.isEmpty())
                 throw new NoWinGoSessionFoundException("No win_go sessions found");
 
+            // Filter out active wingo session and rest of 10 sessions
             Optional<WinGoSession> activeWinGoSession = optionalWinGoSessionList
                     .stream()
                     .filter(winGoSession -> winGoSession.getSessionStatus().equals(GameSessionStatus.ACTIVE))
@@ -79,6 +77,7 @@ public class WinGoService {
             if (activeWinGoSession.isEmpty())
                 throw new NoActiveWinGoSessionFoundException("No active win_go session found");
 
+            // Return sessions list
             return new WinGoSessionResponseDTO(activeWinGoSession.get(), optionalWinGoSessionList);
         } catch (Exception e){
             throw new RuntimeException();

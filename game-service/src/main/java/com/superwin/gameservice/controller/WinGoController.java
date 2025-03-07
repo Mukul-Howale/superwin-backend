@@ -2,15 +2,13 @@ package com.superwin.gameservice.controller;
 
 import com.superwin.gameservice.dto.WinGoBetRequestDTO;
 import com.superwin.gameservice.dto.WinGoSessionResponseDTO;
+import com.superwin.gameservice.enums.Time;
 import com.superwin.gameservice.service.WinGoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/win-go")
@@ -26,9 +24,9 @@ public class WinGoController {
         return new ResponseEntity<>("WinGoBet rejected", HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @GetMapping("/session")
-    public ResponseEntity<WinGoSessionResponseDTO> getSessions(){
-        WinGoSessionResponseDTO winGoSessionResponseDTO = winGoService.getSessions();
+    @GetMapping("/session/{time}")
+    public ResponseEntity<WinGoSessionResponseDTO> getSessions(@PathVariable Time time){
+        WinGoSessionResponseDTO winGoSessionResponseDTO = winGoService.getSessions(time);
         return new ResponseEntity<>(winGoSessionResponseDTO, HttpStatus.OK);
     }
 }

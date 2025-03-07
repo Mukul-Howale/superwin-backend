@@ -21,4 +21,8 @@ public interface WinGoSessionRepository extends JpaRepository<WinGoSession, UUID
 
     @NonNull
     Page<WinGoSession> findAll(@NonNull Pageable pageable);
+
+    @Query("SELECT w FROM WinGoSession w ORDER BY w.time")
+    @NonNull
+    Page<WinGoSession> findAllByTime(@NonNull Pageable pageable);
 }
