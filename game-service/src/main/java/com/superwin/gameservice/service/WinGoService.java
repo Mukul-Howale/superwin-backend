@@ -4,10 +4,7 @@ import com.superwin.gameservice.client.ProfileClient;
 import com.superwin.gameservice.dto.ProfileDTO;
 import com.superwin.gameservice.dto.WinGoBetRequestDTO;
 import com.superwin.gameservice.dto.WinGoSessionResponseDTO;
-import com.superwin.gameservice.enums.GameName;
-import com.superwin.gameservice.enums.GameStatus;
-import com.superwin.gameservice.enums.GameSessionStatus;
-import com.superwin.gameservice.enums.Time;
+import com.superwin.gameservice.enums.*;
 import com.superwin.gameservice.exception.*;
 import com.superwin.gameservice.exception.gameexception.GameNotFoundException;
 import com.superwin.gameservice.exception.gameexception.GameUnderMaintenanceException;
@@ -23,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,24 +38,33 @@ public class WinGoService {
 
     public Boolean bet(WinGoBetRequestDTO winGoBetRequestDTO){
         try {
+            // check if valid profile id
             if (!profileClient.getById(winGoBetRequestDTO.profileId()).getStatusCode().isSameCodeAs(HttpStatus.OK))
                 throw new ProfileNotFoundException("Profile not found");
 
+            // check if valid session id
             if(winGoSessionRepository.findById(winGoBetRequestDTO.sessionId()).isEmpty())
                 throw new NoWinGoSessionFoundException("No win_go sessions found");
 
+            // check if valid time
+            Arrays.stream(Time.values()).forEach(time -> {
+                if (!time.equals(winGoBetRequestDTO.time())) throw new IllegalBetException("Illegal time used");});
+
+            // check if valid bet amount
+            if(winGoBetRequestDTO.betAmount() <= 0) throw new IllegalBetException("Illegal bet amount");
+
+            Arrays.stream(Color.values()).forEach(color -> {
+                if (!color.equals(winGoBetRequestDTO.color())) throw new IllegalBetException("Illegal color used");});
+
+            if(winGoBetRequestDTO.number() < 0 || winGoBetRequestDTO.number() > 9)
+                throw new IllegalBetException("Wrong number input");
+
             // checking bet amount i.e. non-negative, not null,
-            // checking number i.e. between 0 and 9 (inclusive)
             // checking color i.e. comes under the enums
             // checking size i.e. comes under the enums
             // checking time i.e. comes under the enums
             // any one of the color, number, size should not be null
             // frontend will send null for the rest
-
-            if(winGoBetRequestDTO.number() == null
-            && winGoBetRequestDTO.color() == null
-            && winGoBetRequestDTO.size() == null)
-                throw new IllegalBetException("Bet is illegal");
 
             WinGoBet winGoBet = WinGoBet.builder()
                     .id(UUID.randomUUID())
@@ -108,5 +115,9 @@ public class WinGoService {
         } catch (Exception e){
             throw new GeneralException("Unhandled Exception: WinGoSessionResponseDTO getSessions(Time time), WinGoService" + e);
         }
+    }
+
+    private boolean checkBet(){
+
     }
 }
