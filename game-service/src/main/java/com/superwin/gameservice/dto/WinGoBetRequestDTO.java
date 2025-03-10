@@ -14,8 +14,5 @@ public record WinGoBetRequestDTO(
         Color color,
         Size size,
         Time time
-
-
-        // which time cycle i.e. 30 seconds, 1 minute, 5 minute
 ) {
 }

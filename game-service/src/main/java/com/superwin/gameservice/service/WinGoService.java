@@ -38,9 +38,13 @@ public class WinGoService {
 
     public Boolean bet(WinGoBetRequestDTO winGoBetRequestDTO){
         try {
+            boolean flag = false;
+
             // check if valid profile id
-            if (!profileClient.getById(winGoBetRequestDTO.profileId()).getStatusCode().isSameCodeAs(HttpStatus.OK))
+            ResponseEntity<ProfileDTO> responseProfileDTO = profileClient.getById(winGoBetRequestDTO.profileId());
+            if (!responseProfileDTO.getStatusCode().isSameCodeAs(HttpStatus.OK))
                 throw new ProfileNotFoundException("Profile not found");
+            ProfileDTO profileDTO = responseProfileDTO.getBody();
 
             // check if valid session id
             if(winGoSessionRepository.findById(winGoBetRequestDTO.sessionId()).isEmpty())
@@ -51,13 +55,14 @@ public class WinGoService {
                 if (!time.equals(winGoBetRequestDTO.time())) throw new IllegalBetException("Illegal time used");});
 
             // check if valid bet amount
+            // check main wallet amount before placing a bet
             if(winGoBetRequestDTO.betAmount() <= 0) throw new IllegalBetException("Illegal bet amount");
 
-            Arrays.stream(Color.values()).forEach(color -> {
-                if (!color.equals(winGoBetRequestDTO.color())) throw new IllegalBetException("Illegal color used");});
 
             if(winGoBetRequestDTO.number() < 0 || winGoBetRequestDTO.number() > 9)
                 throw new IllegalBetException("Wrong number input");
+            
+
 
             // checking bet amount i.e. non-negative, not null,
             // checking color i.e. comes under the enums
@@ -65,17 +70,6 @@ public class WinGoService {
             // checking time i.e. comes under the enums
             // any one of the color, number, size should not be null
             // frontend will send null for the rest
-
-            WinGoBet winGoBet = WinGoBet.builder()
-                    .id(UUID.randomUUID())
-                    .profileId(winGoBetRequestDTO.profileId())
-                    .sessionId(winGoBetRequestDTO.sessionId())
-                    .betAmount(winGoBetRequestDTO.betAmount())
-                    .number()
-                    .color()
-                    .size()
-                    .time()
-                    .build();
 
             return true;
 
@@ -117,7 +111,17 @@ public class WinGoService {
         }
     }
 
-    private boolean checkBet(){
-
+    private void saveBet(WinGoBetRequestDTO winGoBetRequestDTO){
+        WinGoBet winGoBet = WinGoBet.builder()
+                .id(UUID.randomUUID())
+                .profileId(winGoBetRequestDTO.profileId())
+                .sessionId(winGoBetRequestDTO.sessionId())
+                .betAmount(winGoBetRequestDTO.betAmount())
+                .number()
+                .color()
+                .size()
+                .time()
+                .build();
+        winGoBetRepository.save(winGoBet);
     }
 }
