@@ -17,9 +17,6 @@ import java.util.UUID;
 @Repository
 public interface WinGoSessionRepository extends JpaRepository<WinGoSession, UUID> {
 
-    @Query("SELECT w FROM WinGoSession w WHERE w.sessionStatus = :status")
-    List<WinGoSession> findSessionsByStatus(@Param("status") GameSessionStatus status);
-
     @Query("SELECT w FROM WinGoSession w WHERE w.time = :time")
     @NonNull
     Page<WinGoSession> findAllByTime(@NonNull Pageable pageable, @Param("time")Time time);

@@ -25,6 +25,15 @@ public class Profile {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
+    @Column(name = "main_wallet_id", nullable = false, updatable = false)
+    private UUID mainWalletId;
+
+    @Column(name = "referral_wallet_id", nullable = false, updatable = false)
+    private UUID referralWalletId;
+
+    @Column(name = "savings_wallet_id", nullable = false, updatable = false)
+    private UUID savingsWalletId;
+
     @Column(name = "user_name", nullable = false)
     private String userName;
 
