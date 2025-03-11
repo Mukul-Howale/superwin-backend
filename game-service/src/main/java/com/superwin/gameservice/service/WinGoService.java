@@ -109,16 +109,22 @@ public class WinGoService {
     }
 
     private boolean checkIfSizeIsValid(Size size){
+        Arrays.stream(Size.values()).forEach(s -> {
+            if(!s.equals(size)) throw new InvalidBetException("Invalid size");
+        });
         return true;
     }
 
     private boolean checkIfColorIsValid(Color color){
+        Arrays.stream(Color.values()).forEach(c -> {
+            if(!c.equals(color)) throw new InvalidBetException("Invalid color");
+        });
         return true;
     }
 
     private boolean checkIfNumberIsValid(Integer number){
         if(number < 0 || number > 9)
-            throw new InvalidBetException("Wrong number input");
+            throw new InvalidBetException("Invalid number");
         return true;
     }
 
