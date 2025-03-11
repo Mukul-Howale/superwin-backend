@@ -48,8 +48,8 @@ public class GlobalExceptionHandler{
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(IllegalBetException.class)
-    public ResponseEntity<String> handleIllegalBetException(IllegalBetException ex){
+    @ExceptionHandler(InvalidBetException.class)
+    public ResponseEntity<String> handleIllegalBetException(InvalidBetException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

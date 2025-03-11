@@ -36,10 +36,11 @@ public class WinGoService {
 
     private static final Integer INITIAL_NUMBER = -1;
 
+    /**
+     * For color, size and number, frontend should send null for the rest
+     */
     public Boolean bet(WinGoBetRequestDTO winGoBetRequestDTO){
         try {
-            boolean flag = false;
-
             // check if valid profile id
             ResponseEntity<ProfileDTO> responseProfileDTO = profileClient.getById(winGoBetRequestDTO.profileId());
             if (!responseProfileDTO.getStatusCode().isSameCodeAs(HttpStatus.OK))
@@ -52,24 +53,20 @@ public class WinGoService {
 
             // check if valid time
             Arrays.stream(Time.values()).forEach(time -> {
-                if (!time.equals(winGoBetRequestDTO.time())) throw new IllegalBetException("Illegal time used");});
+                if (!time.equals(winGoBetRequestDTO.time())) throw new InvalidBetException("Illegal time used");});
 
             // check if valid bet amount
             // check main wallet amount before placing a bet
-            if(winGoBetRequestDTO.betAmount() <= 0) throw new IllegalBetException("Illegal bet amount");
+            if(winGoBetRequestDTO.betAmount() <= 0) throw new InvalidBetException("Illegal bet amount");
 
-
-            if(winGoBetRequestDTO.number() < 0 || winGoBetRequestDTO.number() > 9)
-                throw new IllegalBetException("Wrong number input");
-            
-
-
-            // checking bet amount i.e. non-negative, not null,
-            // checking color i.e. comes under the enums
-            // checking size i.e. comes under the enums
-            // checking time i.e. comes under the enums
-            // any one of the color, number, size should not be null
-            // frontend will send null for the rest
+            // check if any one bet is placed from color, size, number
+            if(checkIfColorIsValid(winGoBetRequestDTO.color()))
+                setValueAndSaveBet(winGoBetRequestDTO, winGoBetRequestDTO.color(), null, null);
+            else if(checkIfSizeIsValid(winGoBetRequestDTO.size()))
+                setValueAndSaveBet(winGoBetRequestDTO, null, winGoBetRequestDTO.size(), null);
+            else if(checkIfNumberIsValid(winGoBetRequestDTO.number()))
+                setValueAndSaveBet(winGoBetRequestDTO, null, null, winGoBetRequestDTO.number());
+            else throw new InvalidBetException("Invalid bet placed");
 
             return true;
 
@@ -111,16 +108,30 @@ public class WinGoService {
         }
     }
 
-    private void saveBet(WinGoBetRequestDTO winGoBetRequestDTO){
+    private boolean checkIfSizeIsValid(Size size){
+        return true;
+    }
+
+    private boolean checkIfColorIsValid(Color color){
+        return true;
+    }
+
+    private boolean checkIfNumberIsValid(Integer number){
+        if(number < 0 || number > 9)
+            throw new InvalidBetException("Wrong number input");
+        return true;
+    }
+
+    private void setValueAndSaveBet(WinGoBetRequestDTO winGoBetRequestDTO, Color color, Size size, Integer number){
         WinGoBet winGoBet = WinGoBet.builder()
                 .id(UUID.randomUUID())
                 .profileId(winGoBetRequestDTO.profileId())
                 .sessionId(winGoBetRequestDTO.sessionId())
+                .time(winGoBetRequestDTO.time())
                 .betAmount(winGoBetRequestDTO.betAmount())
-                .number()
-                .color()
-                .size()
-                .time()
+                .color(color)
+                .size(size)
+                .number(number)
                 .build();
         winGoBetRepository.save(winGoBet);
     }
