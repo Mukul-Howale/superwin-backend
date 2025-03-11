@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(GeneralException.class)
-    public ResponseEntity<String> handleGeneralException(GeneralException ex){
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<String> handleGeneralException(GeneralException ex, Exception e){
+        return new ResponseEntity<>(ex.getMessage() + "\n" + e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ProfileNotFoundException.class)

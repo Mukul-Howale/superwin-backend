@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.util.UUID;
 
 @Entity
-@Table(name = "savings_wallet", schema = "profile_service")
+@Table(name = "savings_wallets", schema = "profile_service")
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,4 +21,6 @@ public class SavingsWallet {
     @Id
     private UUID id;
 
+    @OneToOne(mappedBy = "savingsWallet", fetch = FetchType.LAZY)
+    private Profile profile;
 }

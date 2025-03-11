@@ -2,6 +2,7 @@ package com.superwin.profileservice.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,8 +13,9 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "profiles")
+@Table(name = "profiles", schema = "profile_service")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
@@ -25,29 +27,26 @@ public class Profile {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @Column(name = "main_wallet_id", nullable = false, updatable = false)
-    private UUID mainWalletId;
-
-    @Column(name = "referral_wallet_id", nullable = false, updatable = false)
-    private UUID referralWalletId;
-
-    @Column(name = "savings_wallet_id", nullable = false, updatable = false)
-    private UUID savingsWalletId;
-
     @Column(name = "user_name", nullable = false)
     private String userName;
-
-    @Column(name = "bonus", nullable = false)
-    private Long bonus;
-
-    @Column(name = "deposit_no", nullable = false)
-    private Long depositNo;
 
     @Column(name = "referral_code", nullable = false, updatable = false)
     private Long referralCode;
 
     @Column(name = "referred_code", updatable = false)
     private Long referredCode;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "main_wallet_id", referencedColumnName = "id", nullable = false, updatable = false)
+    private MainWallet mainWallet;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "referral_wallet_id", referencedColumnName = "id", nullable = false, updatable = false)
+    private ReferralWallet referralWallet;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "savings_wallet_id", referencedColumnName = "id", nullable = false, updatable = false)
+    private SavingsWallet savingsWallet;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)
