@@ -6,6 +6,7 @@ import java.util.UUID;
 public record ProfileDTO(
         UUID id,
         Long userId,
+        String userName,
         Long bonus,
         Long depositNo,
         Long referralCode,

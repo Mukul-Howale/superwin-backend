@@ -58,6 +58,8 @@ public class WinGoService {
             // check if valid bet amount
             // check main wallet amount before placing a bet
             if(winGoBetRequestDTO.betAmount() <= 0) throw new InvalidBetException("Illegal bet amount");
+            // need to use serialization
+            // check chatGPT
 
             // check if any one bet is placed from color, size, number
             if(checkIfColorIsValid(winGoBetRequestDTO.color()))
