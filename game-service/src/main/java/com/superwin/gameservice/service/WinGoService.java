@@ -1,6 +1,7 @@
 package com.superwin.gameservice.service;
 
 import com.superwin.gameservice.client.ProfileClient;
+import com.superwin.gameservice.dto.MainWalletDTO;
 import com.superwin.gameservice.dto.ProfileDTO;
 import com.superwin.gameservice.dto.WinGoBetRequestDTO;
 import com.superwin.gameservice.dto.WinGoSessionResponseDTO;
@@ -14,11 +15,13 @@ import com.superwin.gameservice.model.WinGoSession;
 import com.superwin.gameservice.repository.GameRepository;
 import com.superwin.gameservice.repository.WinGoBetRepository;
 import com.superwin.gameservice.repository.WinGoSessionRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,26 +29,31 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class WinGoService {
 
-    private WinGoBetRepository winGoBetRepository;
-    private WinGoSessionRepository winGoSessionRepository;
-    private GameRepository gameRepository;
-    private ProfileClient profileClient;
+    private final WinGoBetRepository winGoBetRepository;
+    private final WinGoSessionRepository winGoSessionRepository;
+    private final GameRepository gameRepository;
+    private final ProfileClient profileClient;
+    private final ModelMapper mapper;
 
     private static final Integer INITIAL_NUMBER = -1;
 
     /**
      * For color, size and number, frontend should send null for the rest
+     *
+     * Using Kafka instead of @Async to update wallet balance
+     * in profile service as, kafka is more reliable
      */
+    @Transactional
     public Boolean bet(WinGoBetRequestDTO winGoBetRequestDTO){
         try {
             // check if valid profile id
             ResponseEntity<ProfileDTO> responseProfileDTO = profileClient.getById(winGoBetRequestDTO.profileId());
             if (!responseProfileDTO.getStatusCode().isSameCodeAs(HttpStatus.OK))
                 throw new ProfileNotFoundException("Profile not found");
-            ProfileDTO profileDTO = responseProfileDTO.getBody();
+            MainWalletDTO mainWalletDTO = mapper.map((responseProfileDTO.getBody()).mainWallet(), MainWalletDTO.class);
 
             // check if valid session id
             if(winGoSessionRepository.findById(winGoBetRequestDTO.sessionId()).isEmpty())
@@ -53,13 +61,12 @@ public class WinGoService {
 
             // check if valid time
             Arrays.stream(Time.values()).forEach(time -> {
-                if (!time.equals(winGoBetRequestDTO.time())) throw new InvalidBetException("Illegal time used");});
+                if (!time.equals(winGoBetRequestDTO.time())) throw new InvalidBetException("Invalid time used");});
 
             // check if valid bet amount
+            if(winGoBetRequestDTO.betAmount() <= 0) throw new InvalidBetException("Invalid bet amount");
             // check main wallet amount before placing a bet
-            if(winGoBetRequestDTO.betAmount() <= 0) throw new InvalidBetException("Illegal bet amount");
-            // need to use serialization
-            // check chatGPT
+            if(winGoBetRequestDTO.betAmount() > mainWalletDTO.totalBalance()) throw new InvalidBetException("Bet exceed wallet balance");
 
             // check if any one bet is placed from color, size, number
             if(checkIfColorIsValid(winGoBetRequestDTO.color()))
@@ -69,6 +76,9 @@ public class WinGoService {
             else if(checkIfNumberIsValid(winGoBetRequestDTO.number()))
                 setValueAndSaveBet(winGoBetRequestDTO, null, null, winGoBetRequestDTO.number());
             else throw new InvalidBetException("Invalid bet placed");
+
+            // TO-DO:
+            // Using kafka to update wallet balance in profile service
 
             return true;
 
