@@ -38,8 +38,6 @@ public class WinGoService {
     private final ProfileClient profileClient;
     private final ModelMapper mapper;
 
-    private static final Integer INITIAL_NUMBER = -1;
-
     /**
      * For color, size and number, frontend should send null for the rest
      *
