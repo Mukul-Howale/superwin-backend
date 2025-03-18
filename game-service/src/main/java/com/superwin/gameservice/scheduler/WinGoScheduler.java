@@ -138,7 +138,9 @@ public class WinGoScheduler {
     }
 
     private void majoritySelectionAlgo(){
-
+        // Getting every bet in a particular session
+        // Sorting bets according to color/size/number
+        // Creating a majority out of bets
     }
 
     private void saveSession(Time time){
