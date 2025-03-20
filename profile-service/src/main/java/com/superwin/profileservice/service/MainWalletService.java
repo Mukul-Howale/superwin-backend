@@ -12,6 +12,6 @@ public class MainWalletService {
     private final MainWalletRepository mainWalletRepository;
 
     public Boolean updateBalance(MainWalletBalanceUpdateRequest mainWalletBalanceUpdateRequest){
-        
+        return true;
     }
 }

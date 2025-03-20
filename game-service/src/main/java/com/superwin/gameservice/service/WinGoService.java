@@ -9,6 +9,7 @@ import com.superwin.gameservice.enums.*;
 import com.superwin.gameservice.exception.*;
 import com.superwin.gameservice.exception.gameexception.GameNotFoundException;
 import com.superwin.gameservice.exception.gameexception.GameUnderMaintenanceException;
+import com.superwin.gameservice.helper.WinGoBetHelper;
 import com.superwin.gameservice.model.Game;
 import com.superwin.gameservice.model.WinGoBet;
 import com.superwin.gameservice.model.WinGoSession;
@@ -28,6 +29,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.superwin.gameservice.helper.WinGoBetHelper.*;
+
 @Service
 @RequiredArgsConstructor
 public class WinGoService {
@@ -37,6 +40,11 @@ public class WinGoService {
     private final GameRepository gameRepository;
     private final ProfileClient profileClient;
     private final ModelMapper mapper;
+
+    private static final Long INITIAL_TOTAL_AMOUNT = 0L;
+    private static final Long INITIAL_MINORITY_AMOUNT = 0L;
+    private static final Long INITIAL_MAJORITY_AMOUNT = 0L;
+    private static final Integer INITIAL_NUMBER = -1;
 
     /**
      * For color, size and number, frontend should send null for the rest
@@ -68,11 +76,11 @@ public class WinGoService {
 
             // check if any one bet is placed from color, size, number
             if(checkIfColorIsValid(winGoBetRequestDTO.color()))
-                setValueAndSaveBet(winGoBetRequestDTO, winGoBetRequestDTO.color(), null, null);
+                winGoBetRepository.save(buildWinGoBet(winGoBetRequestDTO, winGoBetRequestDTO.color(), null, null));
             else if(checkIfSizeIsValid(winGoBetRequestDTO.size()))
-                setValueAndSaveBet(winGoBetRequestDTO, null, winGoBetRequestDTO.size(), null);
+                winGoBetRepository.save(buildWinGoBet(winGoBetRequestDTO, null, winGoBetRequestDTO.size(), null));
             else if(checkIfNumberIsValid(winGoBetRequestDTO.number()))
-                setValueAndSaveBet(winGoBetRequestDTO, null, null, winGoBetRequestDTO.number());
+                winGoBetRepository.save(buildWinGoBet(winGoBetRequestDTO, null, null, winGoBetRequestDTO.number()));
             else throw new InvalidBetException("Invalid bet placed");
 
             // TO-DO:
@@ -118,37 +126,18 @@ public class WinGoService {
         }
     }
 
-    private boolean checkIfSizeIsValid(Size size){
-        Arrays.stream(Size.values()).forEach(s -> {
-            if(!s.equals(size)) throw new InvalidBetException("Invalid size");
-        });
-        return true;
-    }
-
-    private boolean checkIfColorIsValid(Color color){
-        Arrays.stream(Color.values()).forEach(c -> {
-            if(!c.equals(color)) throw new InvalidBetException("Invalid color");
-        });
-        return true;
-    }
-
-    private boolean checkIfNumberIsValid(Integer number){
-        if(number < 0 || number > 9)
-            throw new InvalidBetException("Invalid number");
-        return true;
-    }
-
-    private void setValueAndSaveBet(WinGoBetRequestDTO winGoBetRequestDTO, Color color, Size size, Integer number){
-        WinGoBet winGoBet = WinGoBet.builder()
+    public void saveSession(Time time){
+        WinGoSession winGoSession = WinGoSession.builder()
                 .id(UUID.randomUUID())
-                .profileId(winGoBetRequestDTO.profileId())
-                .sessionId(winGoBetRequestDTO.sessionId())
-                .time(winGoBetRequestDTO.time())
-                .betAmount(winGoBetRequestDTO.betAmount())
-                .color(color)
-                .size(size)
-                .number(number)
+                .totalAmount(INITIAL_TOTAL_AMOUNT)
+                .minorityAmount(INITIAL_MINORITY_AMOUNT)
+                .majorityAmount(INITIAL_MAJORITY_AMOUNT)
+                .number(INITIAL_NUMBER)
+                .color(Color.INITIAL_COLOR)
+                .size(Size.INITIAL_SIZE)
+                .time(time)
+                .sessionStatus(GameSessionStatus.ACTIVE)
                 .build();
-        winGoBetRepository.save(winGoBet);
+        winGoSessionRepository.save(winGoSession);
     }
 }
