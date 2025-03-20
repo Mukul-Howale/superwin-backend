@@ -140,4 +140,9 @@ public class WinGoService {
                 .build();
         winGoSessionRepository.save(winGoSession);
     }
+
+    // pick -> a specific outcome for a particular session
+    public void sessionPick(Time time){
+
+    }
 }

@@ -52,4 +52,14 @@ public class GlobalExceptionHandler{
     public ResponseEntity<String> handleIllegalBetException(InvalidBetException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(CreateSessionException.class)
+    public ResponseEntity<String> handleCreateSessionException(CreateSessionException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(LastRunException.class)
+    public ResponseEntity<String> handleLastRunException(LastRunException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

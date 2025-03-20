@@ -1,7 +1,9 @@
 package com.superwin.gameservice.scheduler;
 
 import com.superwin.gameservice.enums.Time;
+import com.superwin.gameservice.exception.CreateSessionException;
 import com.superwin.gameservice.exception.GeneralException;
+import com.superwin.gameservice.exception.LastRunException;
 import com.superwin.gameservice.service.WinGoService;
 import lombok.AllArgsConstructor;
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
@@ -26,7 +28,7 @@ public class WinGoScheduler {
         try {
             winGoService.saveSession(Time._30S);
         } catch (Exception e) {
-            throw new GeneralException("Unhandled Exception: void createSession30S(), WinGoScheduler \n PrintStack: " + e);
+            throw new CreateSessionException("Unhandled Exception: void createSession30S(), WinGoScheduler \n PrintStack: " + e);
         }
     }
 
@@ -38,7 +40,7 @@ public class WinGoScheduler {
         try {
             winGoService.saveSession(Time._1M);
         } catch (Exception e) {
-            throw new GeneralException("Unhandled Exception: void createSession1M(), WinGoScheduler \n PrintStack: " + e);
+            throw new CreateSessionException("Unhandled Exception: void createSession1M(), WinGoScheduler \n PrintStack: " + e);
         }
     }
 
@@ -50,7 +52,7 @@ public class WinGoScheduler {
         try {
             winGoService.saveSession(Time._3M);
         } catch (Exception e) {
-            throw new GeneralException("Unhandled Exception: void createSession3M(), WinGoScheduler \n PrintStack: " + e);
+            throw new CreateSessionException("Unhandled Exception: void createSession3M(), WinGoScheduler \n PrintStack: " + e);
         }
     }
 
@@ -62,7 +64,7 @@ public class WinGoScheduler {
         try {
             winGoService.saveSession(Time._5M);
         } catch (Exception e) {
-            throw new GeneralException("Unhandled Exception: void createSession5M(), WinGoScheduler \n PrintStack: " + e);
+            throw new CreateSessionException("Unhandled Exception: void createSession5M(), WinGoScheduler \n PrintStack: " + e);
         }
     }
 
@@ -72,12 +74,9 @@ public class WinGoScheduler {
     @SchedulerLock(name = "last_run_30s", lockAtMostFor = "5s", lockAtLeastFor = "1s")
     public void lastRun30S(){
         try{
-            System.out.println("30s");
-            // using game id get all the bets data
-            // segregate data account to the parameters (e.g. big, green, etc.)
-
+            winGoService.sessionPick(Time._30S);
         }catch (Exception e){
-            throw new RuntimeException(e);
+            throw new LastRunException("Unhandled Exception: void lastRun30S(), WinGoScheduler \n PrintStack: " + e);
         }
     }
 
@@ -87,12 +86,9 @@ public class WinGoScheduler {
     @SchedulerLock(name = "last_run_1m", lockAtMostFor = "5s", lockAtLeastFor = "1s")
     public void lastRun1M(){
         try{
-            System.out.println("1m");
-            // using game id get all the bets data
-            // segregate data account to the parameters (e.g. big, green, etc.)
-
+            winGoService.sessionPick(Time._1M);
         }catch (Exception e){
-            throw new RuntimeException(e);
+            throw new LastRunException("Unhandled Exception: void lastRun1M(), WinGoScheduler \n PrintStack: " + e);
         }
     }
 
@@ -102,12 +98,9 @@ public class WinGoScheduler {
     @SchedulerLock(name = "last_run_3m", lockAtMostFor = "5s", lockAtLeastFor = "1s")
     public void lastRun3M(){
         try{
-            System.out.println("3m");
-            // using game id get all the bets data
-            // segregate data account to the parameters (e.g. big, green, etc.)
-
+            winGoService.sessionPick(Time._3M);
         }catch (Exception e){
-            throw new RuntimeException(e);
+            throw new LastRunException("Unhandled Exception: void lastRun3M(), WinGoScheduler \n PrintStack: " + e);
         }
     }
 
@@ -117,12 +110,9 @@ public class WinGoScheduler {
     @SchedulerLock(name = "last_run_5m", lockAtMostFor = "5s", lockAtLeastFor = "1s")
     public void lastRun5M(){
         try{
-            System.out.println("5m");
-            // using game id get all the bets data
-            // segregate data account to the parameters (e.g. big, green, etc.)
-
+            winGoService.sessionPick(Time._5M);
         }catch (Exception e){
-            throw new RuntimeException(e);
+            throw new LastRunException("Unhandled Exception: void lastRun5M(), WinGoScheduler \n PrintStack: " + e);
         }
     }
 
