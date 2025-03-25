@@ -6,5 +6,5 @@ import java.util.List;
 
 public record WinGoSessionResponseDTO (
         WinGoSession currentWinGoSession,
-        List<WinGoSession> winGoSessionList
+        List<WinGoSession> winGoSessions
 ){}

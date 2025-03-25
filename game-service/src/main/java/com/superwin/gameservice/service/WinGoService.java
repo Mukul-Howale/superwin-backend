@@ -1,15 +1,11 @@
 package com.superwin.gameservice.service;
 
 import com.superwin.gameservice.client.ProfileClient;
-import com.superwin.gameservice.dto.MainWalletDTO;
-import com.superwin.gameservice.dto.ProfileDTO;
-import com.superwin.gameservice.dto.WinGoBetRequestDTO;
-import com.superwin.gameservice.dto.WinGoSessionResponseDTO;
+import com.superwin.gameservice.dto.*;
 import com.superwin.gameservice.enums.*;
 import com.superwin.gameservice.exception.*;
 import com.superwin.gameservice.exception.gameexception.GameNotFoundException;
 import com.superwin.gameservice.exception.gameexception.GameUnderMaintenanceException;
-import com.superwin.gameservice.helper.WinGoBetHelper;
 import com.superwin.gameservice.model.Game;
 import com.superwin.gameservice.model.WinGoBet;
 import com.superwin.gameservice.model.WinGoSession;
@@ -85,11 +81,26 @@ public class WinGoService {
 
             // TO-DO:
             // Using kafka to update wallet balance in profile service
+            // Bet amount will be sent to the profile service, so new balance can be calculated
 
             return true;
 
         } catch (Exception e){
             throw new GeneralException("Unhandled Exception: Boolean bet(WinGoBetRequestDTO winGoBetRequestDTO), WinGoService" + e);
+        }
+    }
+
+    public List<WinGoBet> getBets(UUID profileId){
+        try {
+            // Get list of recent 11 wingo bets based on profile id
+            List<WinGoBet> optionalWinGoBet = winGoBetRepository.
+                    findAllByProfileId(PageRequest.of(0, 11), profileId)
+                    .getContent();
+            if (optionalWinGoBet.isEmpty())
+                throw new NoWinGoBetsFoundException("No win_go bets found");
+            return optionalWinGoBet;
+        } catch (Exception e){
+            throw new GeneralException("Unhandled Exception: WinGoBetResponseDTO getBets(UUID profileId), WinGoService" + e);
         }
     }
 
@@ -144,6 +155,9 @@ public class WinGoService {
     // pick -> a specific outcome for a particular session
     public void sessionPick(Time time){
 
+        // call calculationAlgo
+        // or
+        // call majoritySelectionAlgo
     }
 
 

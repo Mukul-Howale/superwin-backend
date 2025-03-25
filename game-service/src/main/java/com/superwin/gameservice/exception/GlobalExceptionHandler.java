@@ -62,4 +62,9 @@ public class GlobalExceptionHandler{
     public ResponseEntity<String> handleLastRunException(LastRunException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(NoWinGoBetsFoundException.class)
+    public ResponseEntity<String> handleNoWinGoBetsFoundException(NoWinGoBetsFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

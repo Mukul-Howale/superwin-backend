@@ -1,8 +1,6 @@
 package com.superwin.gameservice.model;
 
-import com.superwin.gameservice.enums.Color;
-import com.superwin.gameservice.enums.Size;
-import com.superwin.gameservice.enums.Time;
+import com.superwin.gameservice.enums.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -50,6 +48,10 @@ public class WinGoBet {
     @Enumerated(EnumType.STRING)
     @Column(name = "time", nullable = false, updatable = false)
     private Time time;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "result", nullable = false)
+    private Result result;
 
     @CreatedDate
     @Column(name = "created_at", nullable = false, updatable = false)

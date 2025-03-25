@@ -2,6 +2,7 @@ package com.superwin.gameservice.helper;
 
 import com.superwin.gameservice.dto.WinGoBetRequestDTO;
 import com.superwin.gameservice.enums.Color;
+import com.superwin.gameservice.enums.Result;
 import com.superwin.gameservice.enums.Size;
 import com.superwin.gameservice.exception.InvalidBetException;
 import com.superwin.gameservice.model.WinGoBet;
@@ -31,6 +32,7 @@ public class WinGoBetHelper {
         return true;
     }
 
+    // This is the first time a bet is created and registered to the db
     public static WinGoBet buildWinGoBet(WinGoBetRequestDTO winGoBetRequestDTO, Color color, Size size, Integer number){
         return WinGoBet.builder()
                 .id(UUID.randomUUID())
@@ -41,6 +43,7 @@ public class WinGoBetHelper {
                 .color(color)
                 .size(size)
                 .number(number)
+                .result(Result.PENDING)
                 .build();
     }
 }

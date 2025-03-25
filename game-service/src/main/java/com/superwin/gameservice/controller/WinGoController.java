@@ -1,14 +1,19 @@
 package com.superwin.gameservice.controller;
 
 import com.superwin.gameservice.dto.WinGoBetRequestDTO;
+import com.superwin.gameservice.dto.WinGoBetResponseDTO;
 import com.superwin.gameservice.dto.WinGoSessionResponseDTO;
 import com.superwin.gameservice.enums.Time;
+import com.superwin.gameservice.model.WinGoBet;
 import com.superwin.gameservice.service.WinGoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/win-go")
@@ -29,4 +34,11 @@ public class WinGoController {
         WinGoSessionResponseDTO winGoSessionResponseDTO = winGoService.getSessions(time);
         return new ResponseEntity<>(winGoSessionResponseDTO, HttpStatus.OK);
     }
+
+    @GetMapping("/bet/{profileId}")
+    public ResponseEntity<List<WinGoBet>> getBets(@PathVariable UUID profileId){
+        List<WinGoBet> winGoBets = winGoService.getBets(profileId);
+        return new ResponseEntity<>(winGoBets, HttpStatus.OK);
+    }
+
 }
