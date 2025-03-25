@@ -145,4 +145,16 @@ public class WinGoService {
     public void sessionPick(Time time){
 
     }
+
+
+    private void calculationAlgo(){
+
+    }
+
+    private void majoritySelectionAlgo(){
+        // Getting every bet in a particular session
+        // Sorting bets according to color/size/number
+        // Creating a majority out of bets
+
+    }
 }

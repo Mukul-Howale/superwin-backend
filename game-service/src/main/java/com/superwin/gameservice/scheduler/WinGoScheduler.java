@@ -115,15 +115,4 @@ public class WinGoScheduler {
             throw new LastRunException("Unhandled Exception: void lastRun5M(), WinGoScheduler \n PrintStack: " + e);
         }
     }
-
-    private void calculationAlgo(){
-
-    }
-
-    private void majoritySelectionAlgo(){
-        // Getting every bet in a particular session
-        // Sorting bets according to color/size/number
-        // Creating a majority out of bets
-
-    }
 }
