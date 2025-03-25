@@ -1,7 +1,6 @@
 package com.superwin.gameservice.controller;
 
 import com.superwin.gameservice.dto.WinGoBetRequestDTO;
-import com.superwin.gameservice.dto.WinGoBetResponseDTO;
 import com.superwin.gameservice.dto.WinGoSessionResponseDTO;
 import com.superwin.gameservice.enums.Time;
 import com.superwin.gameservice.model.WinGoBet;
