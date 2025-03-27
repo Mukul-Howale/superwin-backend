@@ -154,7 +154,7 @@ public class WinGoService {
 
     // pick -> a specific outcome for a particular session
     public void sessionPick(Time time){
-
+        
         // call calculationAlgo
         // or
         // call majoritySelectionAlgo
