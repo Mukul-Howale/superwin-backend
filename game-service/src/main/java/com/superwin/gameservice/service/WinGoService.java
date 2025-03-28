@@ -162,7 +162,7 @@ public class WinGoService {
 
 
     private void calculationAlgo(){
-
+        // Random number generator from 0 to 9
     }
 
     private void majoritySelectionAlgo(){
