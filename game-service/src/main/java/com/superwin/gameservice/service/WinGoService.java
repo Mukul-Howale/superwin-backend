@@ -166,7 +166,7 @@ public class WinGoService {
     }
 
     private void majoritySelectionAlgo(){
-        // Getting every bet in a particular session
+        // Getting every bet in a particular session which is pending
         // Sorting bets according to color/size/number
         // Creating a majority out of bets
 
