@@ -2,7 +2,6 @@ package com.superwin.gameservice.scheduler;
 
 import com.superwin.gameservice.enums.Time;
 import com.superwin.gameservice.exception.CreateSessionException;
-import com.superwin.gameservice.exception.GeneralException;
 import com.superwin.gameservice.exception.LastRunException;
 import com.superwin.gameservice.service.WinGoService;
 import lombok.AllArgsConstructor;

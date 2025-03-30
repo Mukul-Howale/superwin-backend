@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface WinGoBetRepository extends JpaRepository<WinGoBet, UUID> {
@@ -15,5 +16,9 @@ public interface WinGoBetRepository extends JpaRepository<WinGoBet, UUID> {
     @Query("SELECT w FROM WinGoBet w WHERE w.profileId = :profileId")
     @NonNull
     Page<WinGoBet> findAllByProfileId(@NonNull Pageable pageable, @Param("profileId") UUID profileId);
+
+    @Query("SELECT w FROM WinGoBet w WHERE w.sessionId = :sessionId AND w.result = :result")
+    @NonNull
+    List<WinGoBet> findAllBySessionIdAndResult(@Param("sessionId") UUID sessionId, @Param("result") String result);
 
 }

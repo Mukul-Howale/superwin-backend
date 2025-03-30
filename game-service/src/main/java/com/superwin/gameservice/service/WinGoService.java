@@ -154,7 +154,7 @@ public class WinGoService {
 
     // pick -> a specific outcome for a particular session
     public void sessionPick(Time time){
-        
+        majoritySelectionAlgo(time);
         // call calculationAlgo
         // or
         // call majoritySelectionAlgo
@@ -165,10 +165,24 @@ public class WinGoService {
         // Random number generator from 0 to 9
     }
 
-    private void majoritySelectionAlgo(){
+    private void majoritySelectionAlgo(Time time){
         // Getting every bet in a particular session which is pending
         // Sorting bets according to color/size/number
         // Creating a majority out of bets
+        List<WinGoSession> optionalWinGoSessionList = winGoSessionRepository.
+                findAllByTime(PageRequest.of(0, 1), time)
+                .getContent();
+        if (optionalWinGoSessionList.isEmpty())
+            throw new NoWinGoSessionFoundException("No win_go sessions found");
+        // Filter out active wingo session and rest of 10 sessions
+        Optional<WinGoSession> activeWinGoSession = optionalWinGoSessionList
+                .stream()
+                .filter(winGoSession -> winGoSession.getSessionStatus().equals(GameSessionStatus.ACTIVE))
+                .findFirst();
+        if (activeWinGoSession.isEmpty())
+            throw new NoActiveWinGoSessionFoundException("No active win_go session found");
+
+        List<WinGoBet> winGoBets = winGoBetRepository.findAllBySessionIdAndResult(activeWinGoSession.get().getId(), String.valueOf(Result.PENDING));
 
     }
 }
