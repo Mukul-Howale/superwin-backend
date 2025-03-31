@@ -154,18 +154,18 @@ public class WinGoService {
 
     // pick -> a specific outcome for a particular session
     public void sessionPick(Time time){
-        majoritySelectionAlgo(time);
+        majoritySelection(time);
         // call calculationAlgo
         // or
         // call majoritySelectionAlgo
     }
 
 
-    private void calculationAlgo(){
+    private void randomPickCalculator(){
         // Random number generator from 0 to 9
     }
 
-    private void majoritySelectionAlgo(Time time){
+    private void majoritySelection(Time time){
         // Getting every bet in a particular session which is pending
         // Sorting bets according to color/size/number
         // Creating a majority out of bets
@@ -183,6 +183,13 @@ public class WinGoService {
             throw new NoActiveWinGoSessionFoundException("No active win_go session found");
 
         List<WinGoBet> winGoBets = winGoBetRepository.findAllBySessionIdAndResult(activeWinGoSession.get().getId(), String.valueOf(Result.PENDING));
-
+        // Count small
+        // Count big
+        // Count green
+        // Count red
+        // Count specific numbers
+        // Total of small + red, small + green
+        // Total of big + red, big + green
+        // Sort them high to low
     }
 }
