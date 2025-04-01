@@ -192,4 +192,8 @@ public class WinGoService {
         // Total of big + red, big + green
         // Sort them high to low
     }
+
+    private Integer[] countPicks(){
+        return new Integer[0];
+    }
 }
