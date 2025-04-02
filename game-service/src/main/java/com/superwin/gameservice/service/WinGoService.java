@@ -155,9 +155,9 @@ public class WinGoService {
     // pick -> a specific outcome for a particular session
     public void sessionPick(Time time){
         majoritySelection(time);
-        // call calculationAlgo
+        // call randomPickCalculator
         // or
-        // call majoritySelectionAlgo
+        // call majoritySelection
     }
 
 
@@ -194,6 +194,7 @@ public class WinGoService {
     }
 
     private Integer[] countPicks(){
-        return new Integer[0];
+
+        return new Integer[10];
     }
 }
