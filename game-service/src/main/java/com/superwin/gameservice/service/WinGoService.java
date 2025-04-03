@@ -193,8 +193,42 @@ public class WinGoService {
         // Sort them high to low
     }
 
-    private Integer[] countPicks(){
-
+    private Integer[] countBets(List<WinGoBet> winGoBets){
+        Long[] bets = new Long[10];
+        for (WinGoBet bet : winGoBets){
+            if(bet.getColor().equals(Color.RED)){
+                bets[0] = bets[0] + bet.getBetAmount();
+                bets[2] = bets[2] + bet.getBetAmount();
+                bets[4] = bets[4] + bet.getBetAmount();
+                bets[6] = bets[6] + bet.getBetAmount();
+                bets[8] = bets[8] + bet.getBetAmount();
+            }
+            if(bet.getColor().equals(Color.GREEN)){
+                bets[1] = bets[1] + bet.getBetAmount();
+                bets[3] = bets[3] + bet.getBetAmount();
+                bets[5] = bets[5] + bet.getBetAmount();
+                bets[7] = bets[7] + bet.getBetAmount();
+                bets[9] = bets[9] + bet.getBetAmount();
+            }
+            if(bet.getSize().equals(Size.SMALL)){
+                bets[0] = bets[0] + bet.getBetAmount();
+                bets[1] = bets[1] + bet.getBetAmount();
+                bets[2] = bets[2] + bet.getBetAmount();
+                bets[3] = bets[3] + bet.getBetAmount();
+                bets[4] = bets[4] + bet.getBetAmount();
+            }
+            if(bet.getSize().equals(Size.BIG)){
+                bets[5] = bets[5] + bet.getBetAmount();
+                bets[6] = bets[6] + bet.getBetAmount();
+                bets[7] = bets[7] + bet.getBetAmount();
+                bets[8] = bets[8] + bet.getBetAmount();
+                bets[9] = bets[9] + bet.getBetAmount();
+            }
+            if(bet.getColor().equals(Color.PURPLE)){
+                bets[0] = bets[0] + bet.getBetAmount();
+                bets[5] = bets[5] + bet.getBetAmount();
+            }
+        }
         return new Integer[10];
     }
 }
