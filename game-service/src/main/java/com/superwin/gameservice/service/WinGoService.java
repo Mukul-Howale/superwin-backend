@@ -20,10 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static com.superwin.gameservice.helper.WinGoBetHelper.*;
 
@@ -193,7 +190,7 @@ public class WinGoService {
         // Sort them high to low
     }
 
-    private Integer[] countBets(List<WinGoBet> winGoBets){
+    private Long[] countBets(List<WinGoBet> winGoBets){
         Long[] bets = new Long[10];
         for (WinGoBet bet : winGoBets){
             if(bet.getColor().equals(Color.RED)){
@@ -228,7 +225,10 @@ public class WinGoService {
                 bets[0] = bets[0] + bet.getBetAmount();
                 bets[5] = bets[5] + bet.getBetAmount();
             }
+            if(!Objects.equals(bet.getNumber(), INITIAL_NUMBER)){
+                
+            }
         }
-        return new Integer[10];
+        return bets;
     }
 }
