@@ -179,40 +179,66 @@ public class WinGoService {
             throw new NoActiveWinGoSessionFoundException("No active win_go session found");
 
         List<WinGoBet> winGoBets = winGoBetRepository.findAllBySessionIdAndResult(activeWinGoSession.get().getId(), String.valueOf(Result.PENDING));
-        LinkedHashMap<String, Long> amount = totalAmountPerPick(winGoBets);
 
+        LinkedHashMap<String, Long> colorSizeAmountPerPick = new LinkedHashMap<>();
+        Long[] numberAmountPerPick = new Long[10];
+        totalAmountPerPick(winGoBets,colorSizeAmountPerPick,numberAmountPerPick);
 
+        List<Integer> smallestAmountPicks = checkCombination(colorSizeAmountPerPick);
 
-        // Sorting won't work
-        // Have to calculate amount for each pick
-        // e.g. total for red, total for small, etc.
-        // Also need to calculate for each combination of picks
-        // e.g. red and big, red and small, green and big, for each number, etc.
+        // Comparing smallestAmountPicks with specific numbers
+
     }
 
-    private LinkedHashMap<String, Long> totalAmountPerPick(List<WinGoBet> winGoBets){
-        LinkedHashMap<String, Long> bets = new LinkedHashMap<>();
+    private void totalAmountPerPick(List<WinGoBet> winGoBets, LinkedHashMap<String, Long> colorSizeAmountPerPick, Long[] numberAmountPerPick){
         for (WinGoBet bet : winGoBets){
-            if(bet.getColor().equals(Color.RED)) bets.merge("red", bet.getBetAmount(), Long::sum);
-            if(bet.getColor().equals(Color.GREEN)) bets.merge("green", bet.getBetAmount(), Long::sum);
-            if(bet.getSize().equals(Size.SMALL)) bets.merge("small", bet.getBetAmount(), Long::sum);
-            if(bet.getSize().equals(Size.BIG)) bets.merge("big", bet.getBetAmount(), Long::sum);
-            if(bet.getColor().equals(Color.PURPLE)) bets.merge("purple", bet.getBetAmount(), Long::sum);
+            if(bet.getColor().equals(Color.RED)) colorSizeAmountPerPick.merge("red", bet.getBetAmount(), Long::sum);
+            if(bet.getColor().equals(Color.GREEN)) colorSizeAmountPerPick.merge("green", bet.getBetAmount(), Long::sum);
+            if(bet.getSize().equals(Size.SMALL)) colorSizeAmountPerPick.merge("small", bet.getBetAmount(), Long::sum);
+            if(bet.getSize().equals(Size.BIG)) colorSizeAmountPerPick.merge("big", bet.getBetAmount(), Long::sum);
+            if(bet.getColor().equals(Color.PURPLE)) colorSizeAmountPerPick.merge("purple", bet.getBetAmount(), Long::sum);
+
+            numberAmountPerPick[bet.getNumber()] = numberAmountPerPick[bet.getNumber()] + bet.getBetAmount();
         }
-        return bets;
     }
 
     private List<Integer> checkCombination(LinkedHashMap<String, Long> amount){
-        List<Long> amountCombination = new ArrayList<>();
-        Long smallRed = amount.get("small") + amount.get("red");
-        Long smallGreen = amount.get("small") + amount.get("green");
-        Long smallPurple = amount.get("small") + amount.get("purple");
+        LinkedHashMap<String, Long> amountCombination = new LinkedHashMap<>();
+        amountCombination.put("smallRed", amount.get("small") + amount.get("red"));
+        amountCombination.put("smallGreen", amount.get("small") + amount.get("green"));
+        amountCombination.put("smallPurple", amount.get("small") + amount.get("purple"));
 
-        Long bigRed = amount.get("big") + amount.get("red");
-        Long bigGreen = amount.get("big") + amount.get("green");
-        Long bigPurple = amount.get("big") + amount.get("purple");
+        amountCombination.put("bigRed", amount.get("big") + amount.get("red"));
+        amountCombination.put("bigGreen", amount.get("big") + amount.get("green"));
+        amountCombination.put("bigPurple", amount.get("big") + amount.get("purple"));
 
-        
+        LinkedHashMap<String, Long> sortedAmountCombination = sortLowToHigh(amountCombination);
+
+        List<Integer> smallestAmountPicks = new ArrayList<>();
+        String combo = sortedAmountCombination.pollLastEntry().getKey();
+        switch (combo) {
+            case "smallRed" -> {
+                smallestAmountPicks.add(0);
+                smallestAmountPicks.add(2);
+                smallestAmountPicks.add(4);
+            }
+            case "smallGreen" -> {
+                smallestAmountPicks.add(1);
+                smallestAmountPicks.add(3);
+            }
+            case "smallPurple" -> smallestAmountPicks.add(0);
+            case "bigRed" -> {
+                smallestAmountPicks.add(6);
+                smallestAmountPicks.add(8);
+            }
+            case "bigGreen" -> {
+                smallestAmountPicks.add(5);
+                smallestAmountPicks.add(7);
+                smallestAmountPicks.add(9);
+            }
+            case "bigPurple" -> smallestAmountPicks.add(5);
+        }
+        return smallestAmountPicks;
     }
 
     private LinkedHashMap<String, Long> sortLowToHigh(LinkedHashMap<String, Long> amount){
