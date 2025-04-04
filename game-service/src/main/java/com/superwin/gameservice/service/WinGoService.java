@@ -163,14 +163,12 @@ public class WinGoService {
     }
 
     private void majoritySelection(Time time){
-        // Getting every bet in a particular session which is pending
-        // Sorting bets according to color/size/number
-        // Creating a majority out of bets
         List<WinGoSession> optionalWinGoSessionList = winGoSessionRepository.
                 findAllByTime(PageRequest.of(0, 1), time)
                 .getContent();
         if (optionalWinGoSessionList.isEmpty())
             throw new NoWinGoSessionFoundException("No win_go sessions found");
+
         // Filter out active wingo session and rest of 10 sessions
         Optional<WinGoSession> activeWinGoSession = optionalWinGoSessionList
                 .stream()
@@ -180,55 +178,67 @@ public class WinGoService {
             throw new NoActiveWinGoSessionFoundException("No active win_go session found");
 
         List<WinGoBet> winGoBets = winGoBetRepository.findAllBySessionIdAndResult(activeWinGoSession.get().getId(), String.valueOf(Result.PENDING));
-        // Count small
-        // Count big
-        // Count green
-        // Count red
-        // Count specific numbers
-        // Total of small + red, small + green
-        // Total of big + red, big + green
-        // Sort them high to low
+        LinkedHashMap<Integer, Long> amount = totalAmountPerPick(winGoBets);
+        LinkedHashMap<Integer, Long> sortedAmount = sortLowToHigh(amount);
+        // Sorting won't work
+        // Have to calculate amount for each pick
+        // e.g. total for red, total for small, etc.
+        // Also need to calculate for each combination of picks
+        // e.g. red and big, red and small, green and big, for each number, etc.
     }
 
-    private Long[] countBets(List<WinGoBet> winGoBets){
-        Long[] bets = new Long[10];
+    private LinkedHashMap<Integer, Long> totalAmountPerPick(List<WinGoBet> winGoBets){
+        LinkedHashMap<Integer, Long> bets = new LinkedHashMap<>();
+        for(int i=0; i<=9; i++) bets.put(i, INITIAL_TOTAL_AMOUNT);
         for (WinGoBet bet : winGoBets){
             if(bet.getColor().equals(Color.RED)){
-                bets[0] = bets[0] + bet.getBetAmount();
-                bets[2] = bets[2] + bet.getBetAmount();
-                bets[4] = bets[4] + bet.getBetAmount();
-                bets[6] = bets[6] + bet.getBetAmount();
-                bets[8] = bets[8] + bet.getBetAmount();
+                bets.put(0, bets.get(0) + bet.getBetAmount());
+                bets.put(2, bets.get(2) + bet.getBetAmount());
+                bets.put(4, bets.get(4) + bet.getBetAmount());
+                bets.put(6, bets.get(6) + bet.getBetAmount());
+                bets.put(8, bets.get(8) + bet.getBetAmount());
             }
             if(bet.getColor().equals(Color.GREEN)){
-                bets[1] = bets[1] + bet.getBetAmount();
-                bets[3] = bets[3] + bet.getBetAmount();
-                bets[5] = bets[5] + bet.getBetAmount();
-                bets[7] = bets[7] + bet.getBetAmount();
-                bets[9] = bets[9] + bet.getBetAmount();
+                bets.put(1, bets.get(1) + bet.getBetAmount());
+                bets.put(3, bets.get(3) + bet.getBetAmount());
+                bets.put(5, bets.get(5) + bet.getBetAmount());
+                bets.put(7, bets.get(7) + bet.getBetAmount());
+                bets.put(9, bets.get(9) + bet.getBetAmount());
             }
             if(bet.getSize().equals(Size.SMALL)){
-                bets[0] = bets[0] + bet.getBetAmount();
-                bets[1] = bets[1] + bet.getBetAmount();
-                bets[2] = bets[2] + bet.getBetAmount();
-                bets[3] = bets[3] + bet.getBetAmount();
-                bets[4] = bets[4] + bet.getBetAmount();
+                bets.put(0, bets.get(0) + bet.getBetAmount());
+                bets.put(1, bets.get(1) + bet.getBetAmount());
+                bets.put(2, bets.get(2) + bet.getBetAmount());
+                bets.put(3, bets.get(3) + bet.getBetAmount());
+                bets.put(4, bets.get(4) + bet.getBetAmount());
             }
             if(bet.getSize().equals(Size.BIG)){
-                bets[5] = bets[5] + bet.getBetAmount();
-                bets[6] = bets[6] + bet.getBetAmount();
-                bets[7] = bets[7] + bet.getBetAmount();
-                bets[8] = bets[8] + bet.getBetAmount();
-                bets[9] = bets[9] + bet.getBetAmount();
+                bets.put(5, bets.get(5) + bet.getBetAmount());
+                bets.put(6, bets.get(6) + bet.getBetAmount());
+                bets.put(7, bets.get(7) + bet.getBetAmount());
+                bets.put(8, bets.get(8) + bet.getBetAmount());
+                bets.put(9, bets.get(9) + bet.getBetAmount());
             }
             if(bet.getColor().equals(Color.PURPLE)){
-                bets[0] = bets[0] + bet.getBetAmount();
-                bets[5] = bets[5] + bet.getBetAmount();
+                bets.put(0, bets.get(0) + bet.getBetAmount());
+                bets.put(5, bets.get(5) + bet.getBetAmount());
             }
             if(!Objects.equals(bet.getNumber(), INITIAL_NUMBER)){
-                
+                bets.put(bet.getNumber(), bets.get(bet.getNumber()) + bet.getBetAmount())
             }
         }
         return bets;
+    }
+
+    private LinkedHashMap<Integer, Long> sortLowToHigh(LinkedHashMap<Integer, Long> amount){
+        List<Map.Entry<Integer, Long>> entryList = new ArrayList<>(amount.entrySet());
+
+        entryList.sort(Map.Entry.comparingByValue());
+
+        LinkedHashMap<Integer, Long> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<Integer, Long> entry : entryList) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
     }
 }
