@@ -153,6 +153,7 @@ public class WinGoService {
     public void sessionPick(Time time){
         majoritySelection(time);
         // call randomPickCalculator
+        // If no bets are made
         // or
         // call majoritySelection
     }
@@ -178,8 +179,10 @@ public class WinGoService {
             throw new NoActiveWinGoSessionFoundException("No active win_go session found");
 
         List<WinGoBet> winGoBets = winGoBetRepository.findAllBySessionIdAndResult(activeWinGoSession.get().getId(), String.valueOf(Result.PENDING));
-        LinkedHashMap<Integer, Long> amount = totalAmountPerPick(winGoBets);
-        LinkedHashMap<Integer, Long> sortedAmount = sortLowToHigh(amount);
+        LinkedHashMap<String, Long> amount = totalAmountPerPick(winGoBets);
+
+
+
         // Sorting won't work
         // Have to calculate amount for each pick
         // e.g. total for red, total for small, etc.
@@ -187,56 +190,37 @@ public class WinGoService {
         // e.g. red and big, red and small, green and big, for each number, etc.
     }
 
-    private LinkedHashMap<Integer, Long> totalAmountPerPick(List<WinGoBet> winGoBets){
-        LinkedHashMap<Integer, Long> bets = new LinkedHashMap<>();
-        for(int i=0; i<=9; i++) bets.put(i, INITIAL_TOTAL_AMOUNT);
+    private LinkedHashMap<String, Long> totalAmountPerPick(List<WinGoBet> winGoBets){
+        LinkedHashMap<String, Long> bets = new LinkedHashMap<>();
         for (WinGoBet bet : winGoBets){
-            if(bet.getColor().equals(Color.RED)){
-                bets.put(0, bets.get(0) + bet.getBetAmount());
-                bets.put(2, bets.get(2) + bet.getBetAmount());
-                bets.put(4, bets.get(4) + bet.getBetAmount());
-                bets.put(6, bets.get(6) + bet.getBetAmount());
-                bets.put(8, bets.get(8) + bet.getBetAmount());
-            }
-            if(bet.getColor().equals(Color.GREEN)){
-                bets.put(1, bets.get(1) + bet.getBetAmount());
-                bets.put(3, bets.get(3) + bet.getBetAmount());
-                bets.put(5, bets.get(5) + bet.getBetAmount());
-                bets.put(7, bets.get(7) + bet.getBetAmount());
-                bets.put(9, bets.get(9) + bet.getBetAmount());
-            }
-            if(bet.getSize().equals(Size.SMALL)){
-                bets.put(0, bets.get(0) + bet.getBetAmount());
-                bets.put(1, bets.get(1) + bet.getBetAmount());
-                bets.put(2, bets.get(2) + bet.getBetAmount());
-                bets.put(3, bets.get(3) + bet.getBetAmount());
-                bets.put(4, bets.get(4) + bet.getBetAmount());
-            }
-            if(bet.getSize().equals(Size.BIG)){
-                bets.put(5, bets.get(5) + bet.getBetAmount());
-                bets.put(6, bets.get(6) + bet.getBetAmount());
-                bets.put(7, bets.get(7) + bet.getBetAmount());
-                bets.put(8, bets.get(8) + bet.getBetAmount());
-                bets.put(9, bets.get(9) + bet.getBetAmount());
-            }
-            if(bet.getColor().equals(Color.PURPLE)){
-                bets.put(0, bets.get(0) + bet.getBetAmount());
-                bets.put(5, bets.get(5) + bet.getBetAmount());
-            }
-            if(!Objects.equals(bet.getNumber(), INITIAL_NUMBER)){
-                bets.put(bet.getNumber(), bets.get(bet.getNumber()) + bet.getBetAmount())
-            }
+            if(bet.getColor().equals(Color.RED)) bets.merge("red", bet.getBetAmount(), Long::sum);
+            if(bet.getColor().equals(Color.GREEN)) bets.merge("green", bet.getBetAmount(), Long::sum);
+            if(bet.getSize().equals(Size.SMALL)) bets.merge("small", bet.getBetAmount(), Long::sum);
+            if(bet.getSize().equals(Size.BIG)) bets.merge("big", bet.getBetAmount(), Long::sum);
+            if(bet.getColor().equals(Color.PURPLE)) bets.merge("purple", bet.getBetAmount(), Long::sum);
         }
         return bets;
     }
 
-    private LinkedHashMap<Integer, Long> sortLowToHigh(LinkedHashMap<Integer, Long> amount){
-        List<Map.Entry<Integer, Long>> entryList = new ArrayList<>(amount.entrySet());
+    private List<Integer> checkCombination(LinkedHashMap<String, Long> amount){
+        List<Long> amountCombination = new ArrayList<>();
+        Long smallRed = amount.get("small") + amount.get("red");
+        Long smallGreen = amount.get("small") + amount.get("green");
+        Long smallPurple = amount.get("small") + amount.get("purple");
 
+        Long bigRed = amount.get("big") + amount.get("red");
+        Long bigGreen = amount.get("big") + amount.get("green");
+        Long bigPurple = amount.get("big") + amount.get("purple");
+
+        
+    }
+
+    private LinkedHashMap<String, Long> sortLowToHigh(LinkedHashMap<String, Long> amount){
+        List<Map.Entry<String, Long>> entryList = new ArrayList<>(amount.entrySet());
         entryList.sort(Map.Entry.comparingByValue());
 
-        LinkedHashMap<Integer, Long> sortedMap = new LinkedHashMap<>();
-        for (Map.Entry<Integer, Long> entry : entryList) {
+        LinkedHashMap<String, Long> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<String, Long> entry : entryList) {
             sortedMap.put(entry.getKey(), entry.getValue());
         }
         return sortedMap;
