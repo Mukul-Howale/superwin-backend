@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static com.superwin.gameservice.helper.WinGoBetHelper.*;
 
@@ -114,22 +115,13 @@ public class WinGoService {
                 throw new GameUnderMaintenanceException("Game is under maintenance");
 
             // Get list of recent 11 wingo sessions based on time period
-            List<WinGoSession> optionalWinGoSessionList = winGoSessionRepository.
-                    findAllByTime(PageRequest.of(0, 11), time)
-                    .getContent();
-            if (optionalWinGoSessionList.isEmpty())
-                throw new NoWinGoSessionFoundException("No win_go sessions found");
+            List<WinGoSession> optionalWinGoSessionList = getWinGoSessionList(0,11,time);
 
             // Filter out active wingo session and rest of 10 sessions
-            Optional<WinGoSession> activeWinGoSession = optionalWinGoSessionList
-                    .stream()
-                    .filter(winGoSession -> winGoSession.getSessionStatus().equals(GameSessionStatus.ACTIVE))
-                    .findFirst();
-            if (activeWinGoSession.isEmpty())
-                throw new NoActiveWinGoSessionFoundException("No active win_go session found");
+            WinGoSession activeWinGoSession = getActiveWinGoSession(optionalWinGoSessionList);
 
             // Return sessions list
-            return new WinGoSessionResponseDTO(activeWinGoSession.get(), optionalWinGoSessionList);
+            return new WinGoSessionResponseDTO(activeWinGoSession, optionalWinGoSessionList);
         } catch (Exception e){
             throw new GeneralException("Unhandled Exception: WinGoSessionResponseDTO getSessions(Time time), WinGoService" + e);
         }
@@ -152,49 +144,41 @@ public class WinGoService {
 
     // pick -> a specific outcome for a particular session
     public void sessionPick(Time time){
-        majoritySelection(time);
-        // call randomPickCalculator
-        // If no bets are made
-        // or
-        // call majoritySelection
-    }
-
-
-    private void randomPickCalculator(){
-        // Random number generator from 0 to 9
-    }
-
-    private void majoritySelection(Time time){
-        List<WinGoSession> optionalWinGoSessionList = winGoSessionRepository.
-                findAllByTime(PageRequest.of(0, 1), time)
-                .getContent();
-        if (optionalWinGoSessionList.isEmpty())
-            throw new NoWinGoSessionFoundException("No win_go sessions found");
-
-        // Filter out active wingo session and rest of 10 sessions
-        Optional<WinGoSession> optionalActiveWinGoSession = optionalWinGoSessionList
-                .stream()
-                .filter(winGoSession -> winGoSession.getSessionStatus().equals(GameSessionStatus.ACTIVE))
-                .findFirst();
-        if (optionalActiveWinGoSession.isEmpty())
-            throw new NoActiveWinGoSessionFoundException("No active win_go session found");
-
-        WinGoSession activeWinGoSession = optionalActiveWinGoSession.get();
-
+        WinGoSession activeWinGoSession = getActiveWinGoSession(getWinGoSessionList(0,1,time));
         List<WinGoBet> winGoBets = winGoBetRepository.findAllBySessionIdAndResult(activeWinGoSession.getId(), String.valueOf(Result.PENDING));
 
+        // Adding 10 bet condition
+        if(winGoBets.isEmpty()) randomPickCalculator(activeWinGoSession);
+        majoritySelection(activeWinGoSession, winGoBets);
+    }
+
+
+    private void randomPickCalculator(WinGoSession activeWinGoSession){
+        Integer pick = ThreadLocalRandom.current().nextInt(10);
+        updateWinGoSession(activeWinGoSession, pick);
+    }
+
+    private void majoritySelection(WinGoSession activeWinGoSession, List<WinGoBet> winGoBets){
         LinkedHashMap<String, Long> totalAmountPerCategory = new LinkedHashMap<>();
         Long[] numberAmountPerPick = new Long[10];
         totalAmountPerPick(winGoBets,totalAmountPerCategory,numberAmountPerPick);
 
         LinkedHashMap<String, Long> sortedAmountCombination = sortLowToHigh(getCategoryCombinationAmount(totalAmountPerCategory));
 
-        // Iterating through sortedAmountCombination
-        // Getting number picks for each combination starting from the smallest
-        // Checking if any single number bets are made on the smallest pick
-        // And if the single number bet amount win is greater than the smallest pick
-        // If no, then select the pick
-        // If yes, move to the next combination
+        Integer selectedPick = selectPick(sortedAmountCombination, numberAmountPerPick);
+
+        updateWinGoSession(activeWinGoSession, selectedPick);
+    }
+
+    /**
+     * Iterating through sortedAmountCombination
+     * Getting number picks for each combination starting from the smallest
+     * Checking if any single number bets are made on the smallest pick
+     * And if the single number bet amount win is greater than the smallest pick
+     * If no, then select the pick
+     * If yes, move to the next combination
+     */
+    private Integer selectPick(LinkedHashMap<String, Long> sortedAmountCombination, Long[] numberAmountPerPick){
         Integer selectedPick = null;
         for(String key : sortedAmountCombination.keySet()){
             List<Integer> smallestAmountPicks = WinGoPick.getPickCombo(key);
@@ -207,8 +191,28 @@ public class WinGoService {
             }
             if(selectedPick != null) break;
         }
+        return selectedPick;
+    }
 
-        updateWinGoSession(activeWinGoSession, selectedPick);
+    private List<WinGoSession> getWinGoSessionList(Integer pageNumber, Integer pageSize, Time time){
+        List<WinGoSession> optionalWinGoSessionList = winGoSessionRepository.
+                findAllByTime(PageRequest.of(pageNumber, pageSize), time)
+                .getContent();
+        if (optionalWinGoSessionList.isEmpty())
+            throw new NoWinGoSessionFoundException("No win_go sessions found");
+
+        return optionalWinGoSessionList;
+    }
+
+    private WinGoSession getActiveWinGoSession(List<WinGoSession> optionalWinGoSessionList){
+        Optional<WinGoSession> optionalActiveWinGoSession = optionalWinGoSessionList
+                .stream()
+                .filter(winGoSession -> winGoSession.getSessionStatus().equals(GameSessionStatus.ACTIVE))
+                .findFirst();
+        if (optionalActiveWinGoSession.isEmpty())
+            throw new NoActiveWinGoSessionFoundException("No active win_go session found");
+
+        return optionalActiveWinGoSession.get();
     }
 
     private void updateWinGoSession(WinGoSession activeWinGoSession, Integer selectedPick){
