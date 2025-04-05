@@ -28,15 +28,6 @@ public class WinGoSession {
     @Id
     private UUID id;
 
-    @Column(name = "total_amount", nullable = false)
-    private Long totalAmount;
-
-    @Column(name = "minority_amount", nullable = false)
-    private Long minorityAmount;
-
-    @Column(name = "majority_amount", nullable = false)
-    private Long majorityAmount;
-
     @Column(name = "number", nullable = false)
     private Integer number;
 

@@ -130,9 +130,6 @@ public class WinGoService {
     public void saveSession(Time time){
         WinGoSession winGoSession = WinGoSession.builder()
                 .id(UUID.randomUUID())
-                .totalAmount(INITIAL_TOTAL_AMOUNT)
-                .minorityAmount(INITIAL_MINORITY_AMOUNT)
-                .majorityAmount(INITIAL_MAJORITY_AMOUNT)
                 .number(INITIAL_NUMBER)
                 .color(Color.INITIAL_COLOR)
                 .size(Size.INITIAL_SIZE)
@@ -146,9 +143,8 @@ public class WinGoService {
     public void sessionPick(Time time){
         WinGoSession activeWinGoSession = getActiveWinGoSession(getWinGoSessionList(0,1,time));
         List<WinGoBet> winGoBets = winGoBetRepository.findAllBySessionIdAndResult(activeWinGoSession.getId(), String.valueOf(Result.PENDING));
-
-        // Adding 10 bet condition
-        if(winGoBets.isEmpty()) randomPickCalculator(activeWinGoSession);
+        int random = ThreadLocalRandom.current().nextInt(10);
+        if(winGoBets.isEmpty() || random == 5) randomPickCalculator(activeWinGoSession);
         majoritySelection(activeWinGoSession, winGoBets);
     }
 
@@ -220,6 +216,8 @@ public class WinGoService {
         activeWinGoSession.setColor(WinGoPick.getColor(selectedPick));
         activeWinGoSession.setSize(WinGoPick.getSize(selectedPick));
         winGoSessionRepository.save(activeWinGoSession);
+
+        // Updating bets async
     }
 
     private void totalAmountPerPick(List<WinGoBet> winGoBets, LinkedHashMap<String, Long> totalAmountPerCategory, Long[] numberAmountPerPick){
