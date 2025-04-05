@@ -18,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,9 +37,6 @@ public class WinGoService {
     private final ProfileClient profileClient;
     private final ModelMapper mapper;
 
-    private static final Long INITIAL_TOTAL_AMOUNT = 0L;
-    private static final Long INITIAL_MINORITY_AMOUNT = 0L;
-    private static final Long INITIAL_MAJORITY_AMOUNT = 0L;
     private static final Integer INITIAL_NUMBER = -1;
 
     /**
@@ -217,7 +215,7 @@ public class WinGoService {
         activeWinGoSession.setSize(WinGoPick.getSize(selectedPick));
         winGoSessionRepository.save(activeWinGoSession);
 
-        // Updating bets async
+        updateBetsAfterSessionResult(activeWinGoSession,selectedPick);
     }
 
     private void totalAmountPerPick(List<WinGoBet> winGoBets, LinkedHashMap<String, Long> totalAmountPerCategory, Long[] numberAmountPerPick){
@@ -249,5 +247,22 @@ public class WinGoService {
             sortedMap.put(entry.getKey(), entry.getValue());
         }
         return sortedMap;
+    }
+
+    @Async
+    protected void updateBetsAfterSessionResult(WinGoSession activeWinGoSession, Integer selectedPick){
+        List<WinGoBet> winGoBets = winGoBetRepository.findAllBySessionIdAndResult(activeWinGoSession.getId(), String.valueOf(Result.PENDING));
+        List<WinGoBet> updatedWinGoBets = new ArrayList<>();
+        for (WinGoBet bet : winGoBets){
+            if((!Objects.equals(bet.getNumber(), INITIAL_NUMBER) && Objects.equals(bet.getNumber(), selectedPick))
+                    || (!Objects.equals(bet.getColor(),Color.INITIAL_COLOR) && Objects.equals(bet.getColor(), WinGoPick.getColor(selectedPick)))
+                    || (!Objects.equals(bet.getSize(), Size.INITIAL_SIZE) && Objects.equals(bet.getSize(), WinGoPick.getSize(selectedPick))))
+                bet.setResult(Result.WON);
+            else bet.setResult(Result.LOST);
+            updatedWinGoBets.add(bet);
+        }
+        winGoBetRepository.saveAll(updatedWinGoBets);
+
+        // Calculate and change wallet balance
     }
 }
