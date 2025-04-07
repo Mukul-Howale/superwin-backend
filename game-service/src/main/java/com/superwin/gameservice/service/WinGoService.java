@@ -126,6 +126,12 @@ public class WinGoService {
     }
 
     public void saveSession(Time time){
+        // Making previous active session inactive
+        WinGoSession activeWinGoSession = getActiveWinGoSession(getWinGoSessionList(0,1,time));
+        activeWinGoSession.setSessionStatus(GameSessionStatus.INACTIVE);
+        winGoSessionRepository.save(activeWinGoSession);
+
+        // Creating new active session
         WinGoSession winGoSession = WinGoSession.builder()
                 .id(UUID.randomUUID())
                 .number(INITIAL_NUMBER)
