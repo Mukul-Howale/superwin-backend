@@ -152,7 +152,6 @@ public class WinGoService {
         majoritySelection(activeWinGoSession, winGoBets);
     }
 
-
     private void randomPickCalculator(WinGoSession activeWinGoSession){
         Integer pick = ThreadLocalRandom.current().nextInt(10);
         updateWinGoSession(activeWinGoSession, pick);
@@ -269,6 +268,10 @@ public class WinGoService {
         }
         winGoBetRepository.saveAll(updatedWinGoBets);
 
-        // Calculate and change wallet balance 
+        // Calculate and change wallet balance async
+    }
+
+    private void calculateBalanceAfterBetResult(){
+        
     }
 }
