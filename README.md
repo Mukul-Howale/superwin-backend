@@ -1,4 +1,4 @@
-# super-win-backend
+# SuperWin Backend
 This repo has the backend services for SuperWin.
 
 SuperWin is an iGaming platform.
@@ -15,7 +15,11 @@ Upcoming games:
 Future games:
 1. Aviator
 
-SuperWin Microservices Flow Documentation
+Jump to:  
+[Microservices Flow Documentation](https://github.com/Mukul-Howale/superwin-backend/edit/main/README.md#microservices-flow-documentation)  
+[Each service documentation](https://github.com/Mukul-Howale/superwin-backend/edit/main/README.md#each-service-documentation)
+   
+## Microservices Flow Documentation
 1. Infrastructure Layer
   ```
   A. Service Registry (Eureka Server)
@@ -184,4 +188,276 @@ SuperWin Microservices Flow Documentation
      - Check balance & limits
      - Process withdrawal
      - Update wallet balance
+  ```
+
+## Each service documentation
+1. User Service  
+  - Purpose:  
+  ```
+  Handles user authentication, authorization, and user management operations.
+  ```  
+  - Components:
+    - Models
+      ```
+      User: Core user entity with authentication details
+      ```
+      
+    - Controllers
+      ```
+      @RestController
+      public class UserController {
+          // Authentication endpoints
+          // User management endpoints
+      }
+      ```
+
+    - Services
+      ```
+      
+      ```
+      
+    - Repositories
+      ```
+      @Repository
+      public interface UserRepository extends JpaRepository<User, UUID> {
+          // User CRUD operations
+      }
+      ```
+
+2. Profile Service
+  - Purpose:
+  ```
+  Manages user profiles and wallet operations.
+  ```  
+  - Components:
+    - Models
+      ```
+      Profile: User profile information
+      MainWallet: Primary wallet for transactions
+      SavingsWallet: Wallet for savings
+      ReferralWallet: Wallet for referral earnings
+      ```
+      
+    - Controllers
+      ```
+      @RestController
+      @RequestMapping("/profile")
+      public class ProfileController {
+          @GetMapping("/{id}")
+          public ResponseEntity<ProfileDTO> getById(@PathVariable UUID id)
+          
+          @GetMapping("/{referralCode}")
+          public ResponseEntity<ProfileFilterDTO> getProfileFilterByReferralCode()
+          
+          @PostMapping("/create/{userId}/{referredCode}")
+          public ResponseEntity<ProfileDTO> createProfile()
+      }
+      
+      @RestController
+      @RequestMapping("/main-wallet")
+      public class MainWalletController {
+          @PatchMapping("/update-balance")
+          public ResponseEntity<Boolean> updateBalance()
+      }
+      ```
+      
+    - Services
+      ```
+      @Service
+      public class ProfileService {
+          // Profile management
+          // Wallet operations
+          // Referral handling
+      }
+      ```
+      
+    - Repositories
+      ```
+      ProfileRepository
+      MainWalletRepository
+      SavingsWalletRepository
+      ReferralWalletRepository
+      ```
+
+3. Game Service
+  - Purpose:  
+  ```
+  Manages game operations and betting functionality.
+  ```  
+  - Components:
+    - Models
+      ```
+      Game: Base game entity
+      WinGoSession: WinGo game session
+      WinGoBet: Betting information
+      ```
+      
+    - Controllers
+      ```
+      @RestController
+      @RequestMapping("/game")
+      public class GameController {
+          @PostMapping("/add-game")
+          public ResponseEntity<String> addGame()
+      }
+      
+      @Controller
+      @RequestMapping("/win-go")
+      public class WinGoController {
+          @PostMapping("/bet")
+          public ResponseEntity<String> bet()
+          
+          @GetMapping("/session/{time}")
+          public ResponseEntity<WinGoSessionResponseDTO> getSessions()
+          
+          @GetMapping("/bet/{profileId}")
+          public ResponseEntity<List<WinGoBet>> getBets()
+      }
+      ```
+
+    - Services
+      ```
+      @Service
+      public class GameService {
+          // Game management
+          // Session handling
+          // Bet processing
+      }
+      
+      @Service
+      public class WinGoService {
+          // WinGo specific operations
+          // Bet validation
+          // Result calculation
+      }
+      ```
+      
+    - Repositories
+      ```
+      public interface GameRepository extends JpaRepository<Game, UUID>
+      public interface WinGoBetRepository extends JpaRepository<WinGoBet, UUID>
+      public interface WinGoSessionRepository extends JpaRepository<WinGoSession, UUID>
+      ```
+
+4. Transaction Service 
+  - Purpose:  
+  ```
+  Handles all financial transactions and payment processing.
+  ```  
+  - Components:
+    - Models
+      ```
+      
+      ```
+      
+    - Controllers
+      ```
+      @RestController
+      public class TransactionController {
+          // Deposit endpoints
+          // Withdrawal endpoints
+          // Transaction history
+      }
+      ```
+
+    - Services
+      ```
+      
+      ```
+      
+    - Repositories
+      ```
+      
+      ```
+
+5. Referral Service
+  - Purpose:  
+  ```
+  Manages referral system and rewards.
+  ```  
+  - Components:
+    - Models
+      ```
+      
+      ```
+      
+    - Controllers
+      ```
+      @RestController
+      @RequestMapping("/referral")
+      public class ReferralController {
+          @PostMapping("/add")
+          public ResponseEntity<String> addReferral()
+      }
+      ```
+
+    - Services
+      ```
+      
+      ```
+      
+    - Repositories
+      ```
+      @Repository
+      public interface ReferralRepository extends JpaRepository<Referral, UUID> {
+          Optional<Referral> getReferralDetailsByReferralCode(@Param("referredCode") Long referredCode);
+      }
+      ```
+
+## Common Features Across Services
+1. Exception Handling
+  ```
+  @RestControllerAdvice
+  public class GlobalExceptionHandler {
+      // Common exceptions
+      // Service-specific exceptions
+      // Error responses
+  }
+  ```
+
+2. Configuration
+  - Model Mapper
+    ```
+    @Configuration
+    public class ModelMapperConfig {
+        @Bean
+        public ModelMapper getMapperObject()
+    }
+    ```
+    
+  - Web Client (for inter-service communication)
+    ```
+    @Configuration
+    public class WebClientConfig {
+        @Bean
+        public WebClient webClient()
+    }
+    ```
+
+3. Security
+  ```
+  - JWT Authentication
+  - Role-based access control
+  - Secure inter-service communication
+  ```
+
+4. Database
+  ```
+  - PostgreSQL for all services
+  - JPA repositories
+  - Transaction management
+  ```
+
+5. Monitoring
+  ```
+  - Actuator endpoints
+  - Micrometer metrics
+  - Zipkin tracing
+  ```
+
+6. Testing
+  ```
+  - JUnit Jupiter
+  - TestContainers
+  - Integration tests
   ```
