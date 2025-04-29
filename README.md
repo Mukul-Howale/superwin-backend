@@ -5,21 +5,25 @@ SuperWin is an iGaming platform.
 iGaming refers to online betting conducted through electronic means, encompassing various forms of gambling such as poker, sports betting, and online casinos. 
 
 Available games:
+(No games available)
+
+In-progress games:
 1. WinGo lottery
 
 Upcoming games:
-1. Coin flip
-2. Mines
-3. Dice
+1. Aviator
+2. Coin flip
+3. Mines
+4. Dice
 
 Future games:
-1. Aviator
+1. Slots
 
 Jump to:  
-[Microservices Flow Documentation](https://github.com/Mukul-Howale/superwin-backend/edit/main/README.md#microservices-flow-documentation)  
-[Each service documentation](https://github.com/Mukul-Howale/superwin-backend/edit/main/README.md#each-service-documentation)
+[Microservices Flow Documentation](https://github.com/Mukul-Howale/superwin-backend?tab=readme-ov-file#microservices-flow-documentation)  
+[Each service documentation](https://github.com/Mukul-Howale/superwin-backend?tab=readme-ov-file#each-service-documentation)
    
-## Microservices Flow Documentation
+## Services Flow Documentation
 1. Infrastructure Layer
   ```
   A. Service Registry (Eureka Server)
@@ -190,7 +194,7 @@ Jump to:
      - Update wallet balance
   ```
 
-## Each service documentation
+## Services documentation
 1. User Service  
   - Purpose:  
   ```
