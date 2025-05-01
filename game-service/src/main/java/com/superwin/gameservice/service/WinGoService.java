@@ -269,6 +269,7 @@ public class WinGoService {
         winGoBetRepository.saveAll(updatedWinGoBets);
 
         // Calculate and change wallet balance async
+        
     }
 
     private void calculateBalanceAfterBetResult(){
