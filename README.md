@@ -20,8 +20,8 @@ Future games:
 1. Slots
 
 Jump to:  
-[Microservices Flow Documentation](https://github.com/Mukul-Howale/superwin-backend?tab=readme-ov-file#microservices-flow-documentation)  
-[Each service documentation](https://github.com/Mukul-Howale/superwin-backend?tab=readme-ov-file#each-service-documentation)
+[Services Flow Documentation](https://github.com/Mukul-Howale/superwin-backend?tab=readme-ov-file#microservices-flow-documentation)  
+[Services documentation](https://github.com/Mukul-Howale/superwin-backend?tab=readme-ov-file#each-service-documentation)
    
 ## Services Flow Documentation
 1. Infrastructure Layer
