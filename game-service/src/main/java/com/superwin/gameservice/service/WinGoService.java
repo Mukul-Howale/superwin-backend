@@ -160,6 +160,7 @@ public class WinGoService {
     private void majoritySelection(WinGoSession activeWinGoSession, List<WinGoBet> winGoBets){
         LinkedHashMap<String, Long> totalAmountPerCategory = new LinkedHashMap<>();
         Long[] numberAmountPerPick = new Long[10];
+        
         totalAmountPerPick(winGoBets,totalAmountPerCategory,numberAmountPerPick);
 
         LinkedHashMap<String, Long> sortedAmountCombination = sortLowToHigh(getCategoryCombinationAmount(totalAmountPerCategory));
