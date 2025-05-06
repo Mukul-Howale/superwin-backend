@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface ProfileClient {
 
     @GetExchange("/{id}")
-    public ResponseEntity<ProfileDTO> getById(@PathVariable UUID id);
+    ResponseEntity<ProfileDTO> getById(@PathVariable UUID id);
 }
