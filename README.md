@@ -18,6 +18,8 @@ Upcoming games:
 
 Future games:
 1. Slots
+2. Rummy
+3. Teen patti
 
 Jump to:  
 [Services Flow Documentation](https://github.com/Mukul-Howale/superwin-backend?tab=readme-ov-file#microservices-flow-documentation)  
