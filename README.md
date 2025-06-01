@@ -1,5 +1,5 @@
 # SuperWin Backend
-This repo has the backend services for SuperWin. 
+This repo has the backend services for SuperWin.
 
 SuperWin is an iGaming platform.
 iGaming refers to online betting conducted through electronic means, encompassing various forms of gambling such as poker, sports betting, and online casinos. 
